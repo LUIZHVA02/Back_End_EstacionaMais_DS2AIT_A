@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model tbl_administradores {
+  id                              Int                               @id @default(autoincrement())
+  nome                            String                            @db.VarChar(100)
+  email                           String                            @db.VarChar(100)
+  telefone                        BigInt
+  endereco                        String                            @db.VarChar(300)
+  cpf                             BigInt
+  tbl_reserva_vagas_administrador tbl_reserva_vagas_administrador[]
+}
+
+model tbl_pagamento_reserva {
+  id             Int             @id @default(autoincrement())
+  id_pagamento   Int?
+  id_reserva     Int?
+  id_usuario     Int?
+  tbl_pagamentos tbl_pagamentos? @relation(fields: [id_pagamento], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_pagamento_reserva_ibfk_1")
+  tbl_usuarios   tbl_usuarios?   @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_pagamento_reserva_ibfk_2")
+  tbl_reservas   tbl_reservas?   @relation(fields: [id_reserva], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_pagamento_reserva_ibfk_3")
+
+  @@index([id_pagamento], map: "id_pagamento")
+  @@index([id_reserva], map: "id_reserva")
+  @@index([id_usuario], map: "id_usuario")
+}
+
+model tbl_pagamentos {
+  id                    Int                     @id @default(autoincrement())
+  forma_pagamento       String                  @db.VarChar(30)
+  tbl_pagamento_reserva tbl_pagamento_reserva[]
+}
+
+model tbl_reserva_vagas_administrador {
+  id                  Int                  @id @default(autoincrement())
+  id_vaga             Int?
+  id_reserva          Int?
+  id_veiculo          Int?
+  id_administrador    Int?
+  tbl_vagas           tbl_vagas?           @relation(fields: [id_vaga], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_reserva_vagas_administrador_ibfk_1")
+  tbl_reservas        tbl_reservas?        @relation(fields: [id_reserva], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_reserva_vagas_administrador_ibfk_2")
+  tbl_veiculos        tbl_veiculos?        @relation(fields: [id_veiculo], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_reserva_vagas_administrador_ibfk_3")
+  tbl_administradores tbl_administradores? @relation(fields: [id_administrador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_reserva_vagas_administrador_ibfk_4")
+
+  @@index([id_administrador], map: "id_administrador")
+  @@index([id_reserva], map: "id_reserva")
+  @@index([id_vaga], map: "id_vaga")
+  @@index([id_veiculo], map: "id_veiculo")
+}
+
+model tbl_reserva_vagas_usuario {
+  id           Int           @id @default(autoincrement())
+  id_vaga      Int?
+  id_reserva   Int?
+  id_veiculo   Int?
+  id_usuario   Int?
+  tbl_vagas    tbl_vagas?    @relation(fields: [id_vaga], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_reserva_vagas_usuario_ibfk_1")
+  tbl_reservas tbl_reservas? @relation(fields: [id_reserva], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_reserva_vagas_usuario_ibfk_2")
+  tbl_veiculos tbl_veiculos? @relation(fields: [id_veiculo], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_reserva_vagas_usuario_ibfk_3")
+  tbl_usuarios tbl_usuarios? @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_reserva_vagas_usuario_ibfk_4")
+
+  @@index([id_reserva], map: "id_reserva")
+  @@index([id_usuario], map: "id_usuario")
+  @@index([id_vaga], map: "id_vaga")
+  @@index([id_veiculo], map: "id_veiculo")
+}
+
+model tbl_reservas {
+  id                              Int                               @id @default(autoincrement())
+  nome                            String                            @db.VarChar(100)
+  email                           String                            @db.VarChar(100)
+  telefone                        BigInt
+  dataEntrada                     DateTime                          @db.Date
+  dataSaida                       DateTime                          @db.Date
+  horarioSaida                    DateTime?                         @db.Time(0)
+  horarioEntrada                  DateTime?                         @db.Time(0)
+  tbl_pagamento_reserva           tbl_pagamento_reserva[]
+  tbl_reserva_vagas_administrador tbl_reserva_vagas_administrador[]
+  tbl_reserva_vagas_usuario       tbl_reserva_vagas_usuario[]
+}
+
+model tbl_usuario_veiculos {
+  id           Int           @id @default(autoincrement())
+  id_usuario   Int?
+  id_veiculo   Int?
+  tbl_usuarios tbl_usuarios? @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_usuario_veiculos_ibfk_1")
+  tbl_veiculos tbl_veiculos? @relation(fields: [id_veiculo], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_usuario_veiculos_ibfk_2")
+
+  @@index([id_usuario], map: "id_usuario")
+  @@index([id_veiculo], map: "id_veiculo")
+}
+
+model tbl_usuarios {
+  id                        Int                         @id @default(autoincrement())
+  nome                      String                      @db.VarChar(100)
+  email                     String                      @db.VarChar(100)
+  telefone                  BigInt
+  endereco                  String                      @db.VarChar(300)
+  cpf                       BigInt
+  tbl_pagamento_reserva     tbl_pagamento_reserva[]
+  tbl_reserva_vagas_usuario tbl_reserva_vagas_usuario[]
+  tbl_usuario_veiculos      tbl_usuario_veiculos[]
+}
+
+model tbl_vagas {
+  id                              Int                               @id @default(autoincrement())
+  sigla_vaga                      String?                           @db.VarChar(10)
+  tipo_vaga                       String?                           @db.VarChar(100)
+  status_vaga                     String?                           @db.VarChar(100)
+  tbl_reserva_vagas_administrador tbl_reserva_vagas_administrador[]
+  tbl_reserva_vagas_usuario       tbl_reserva_vagas_usuario[]
+}
+
+model tbl_veiculos {
+  id                              Int                               @id @default(autoincrement())
+  modelo                          String                            @db.VarChar(50)
+  ano                             Int
+  placa                           String                            @db.VarChar(8)
+  marca                           String                            @db.VarChar(50)
+  cor                             String                            @db.VarChar(50)
+  informacao                      String                            @db.VarChar(300)
+  tbl_reserva_vagas_administrador tbl_reserva_vagas_administrador[]
+  tbl_reserva_vagas_usuario       tbl_reserva_vagas_usuario[]
+  tbl_usuario_veiculos            tbl_usuario_veiculos[]
+}
