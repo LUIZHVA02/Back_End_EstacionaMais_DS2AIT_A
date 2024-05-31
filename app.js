@@ -53,3 +53,9 @@ app.use((request, response, next) => {
 })
 
 const bodyParserJson = bodyParser.json()
+
+
+
+app.listen(8080, function () {
+    console.log('Serviço funcionando e aguardando requisições')
+})
