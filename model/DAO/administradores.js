@@ -17,39 +17,116 @@ const prisma = new PrismaClient()
 
 const selectAllAdministradores = async function () {
     try {
-        
+        let sql = `select * from tbl_administradores`
+
+        const rsAdministradores = await prisma.$queryRawUnsafe(sql)
+
+        return rsAdministradores
     } catch (error) {
         return false
     }
 }
 
-const selectByIdAdministrador = async function () {
+const selectByIdAdministrador = async function (id) {
     try {
-        
+        let sql = `select * from tbl_administradores where id = ${id}`
+
+        const rsAdministradores = await prisma.$queryRawUnsafe(sql)
+
+        return rsAdministradores
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
+const updateAdministrador = async function (id, dadosAdministradorUpdate) {
+    try {
+        let sql = `UPDATE tbl_administradores SET `
+        const keys = Object.keys(dadosAdministradorUpdate)
+
+        keys.forEach((key, index) => {
+            sql += `${key} = '${dadosAdministradorUpdate[key]}'`
+            if (index !== keys.length - 1) {
+                sql += `, `
+            }
+        })
+
+        sql += ` WHERE id = ${id}`
+
+        const rsAdministradores = await prisma.$queryRawUnsafe(sql)
+
+        console.log(sql)
+        return rsAdministradores
     } catch (error) {
         return false
     }
 }
 
-const updateAdministrador = async function () {
+const insertAdministrador = async function (dadosAdministrador) {
     try {
-        
+        let sql = `insert into tbl_administradores  (
+                                                        nome,
+                                                        email,
+                                                        telefone,
+                                                        endereco,
+                                                        cpf
+                                                    )
+                                                        values
+                                                    (
+                                                        ${dadosAdministrador.nome},
+                                                        ${dadosAdministrador.email},
+                                                        ${dadosAdministrador.telefone},
+                                                        ${dadosAdministrador.endereco},
+                                                        ${dadosAdministrador.cpf}
+                                                    )`
+
+        const rsAdministradores = await prisma.$queryRawUnsafe(sql)
+
+        return rsAdministradores
     } catch (error) {
         return false
     }
 }
 
-const insertAdministrador = async function () {
+const insertAdministradorLoop = async function (dadosAdministrador) {
     try {
-        
+        let sql = `insert into tbl_administradores  (
+                                                        nome,
+                                                        email,
+                                                        telefone,
+                                                        endereco,
+                                                        cpf
+                                                    )
+                                                        values
+                                                    (`
+                                                    const keys = Object.keys(dadosAdministrador)
+                                            
+                                                    keys.forEach((key, index) => {
+                                                        sql += `${key} = '${dadosAdministrador[key]}'`
+                                                        if (index !== keys.length - 1) {
+                                                            sql += `, `
+                                                        }
+                                                    })
+
+                                                    sql +=`)`
+
+        const rsAdministradores = await prisma.$queryRawUnsafe(sql)
+
+        console.log(rsAdministradores, sql)
+        return rsAdministradores
     } catch (error) {
         return false
     }
 }
 
-const deleteAdministrador = async function () {
+const deleteAdministrador = async function (id) {
     try {
-        
+        let sql = `delete from tbl_administradores where id = ${id}`
+
+        const rsAdministradores = await prisma.$queryRawUnsafe(sql)
+
+        return rsAdministradores
     } catch (error) {
         return false
     }
@@ -60,5 +137,6 @@ module.exports = {
     selectByIdAdministrador,
     updateAdministrador,
     insertAdministrador,
+    insertAdministradorLoop,
     deleteAdministrador
 }

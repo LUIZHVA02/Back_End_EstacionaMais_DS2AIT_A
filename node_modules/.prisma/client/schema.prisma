@@ -11,9 +11,9 @@ model tbl_administradores {
   id                              Int                               @id @default(autoincrement())
   nome                            String                            @db.VarChar(100)
   email                           String                            @db.VarChar(100)
-  telefone                        BigInt
+  telefone                        String                            @db.VarChar(20)
   endereco                        String                            @db.VarChar(300)
-  cpf                             BigInt
+  cpf                             String                            @db.VarChar(15)
   tbl_reserva_vagas_administrador tbl_reserva_vagas_administrador[]
 }
 
@@ -75,11 +75,11 @@ model tbl_reservas {
   id                              Int                               @id @default(autoincrement())
   nome                            String                            @db.VarChar(100)
   email                           String                            @db.VarChar(100)
-  telefone                        BigInt
+  telefone                        String                            @db.VarChar(20)
   dataEntrada                     DateTime                          @db.Date
   dataSaida                       DateTime                          @db.Date
-  horarioSaida                    DateTime?                         @db.Time(0)
-  horarioEntrada                  DateTime?                         @db.Time(0)
+  horarioEntrada                  DateTime                          @db.Time(0)
+  horarioSaida                    DateTime                          @db.Time(0)
   tbl_pagamento_reserva           tbl_pagamento_reserva[]
   tbl_reserva_vagas_administrador tbl_reserva_vagas_administrador[]
   tbl_reserva_vagas_usuario       tbl_reserva_vagas_usuario[]
@@ -100,9 +100,9 @@ model tbl_usuarios {
   id                        Int                         @id @default(autoincrement())
   nome                      String                      @db.VarChar(100)
   email                     String                      @db.VarChar(100)
-  telefone                  BigInt
+  telefone                  String                      @db.VarChar(20)
   endereco                  String                      @db.VarChar(300)
-  cpf                       BigInt
+  cpf                       String                      @db.VarChar(15)
   tbl_pagamento_reserva     tbl_pagamento_reserva[]
   tbl_reserva_vagas_usuario tbl_reserva_vagas_usuario[]
   tbl_usuario_veiculos      tbl_usuario_veiculos[]

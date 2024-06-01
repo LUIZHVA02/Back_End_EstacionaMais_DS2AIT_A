@@ -7,9 +7,9 @@ create table tbl_usuarios(
 id int auto_increment primary key,
 nome varchar(100) not null,
 email varchar(100) not null,
-telefone bigint not null,
+telefone varchar(20) not null,
 endereco varchar(300) not null,
-cpf bigint not null
+cpf varchar(15) not null
 );
 
 insert into tbl_usuarios(
@@ -23,16 +23,16 @@ cpf
 "vitorHugolindojob@gmail.com",
 "1140028922",
 "AV.rosas vermelhas, 1020",
-"12462946109"
+"124.629.461-09"
 );
 
 create table tbl_administradores(
 id int auto_increment primary key,
 nome varchar(100) not null,
 email varchar(100) not null,
-telefone bigint not null,
+telefone varchar(20) not null,
 endereco varchar(300) not null,
-cpf bigint not null
+cpf varchar(15) not null
 );
 
 insert into tbl_administradores(
@@ -44,16 +44,16 @@ cpf
 ) values (
 "Raica Martinez",
 "martinezRica@gmail.com",
-"1165728933",
+"(11)96572-8933",
 "AV.casas amarelas, 1360",
-"23167340956"
+"231.673.409-56"
 ),
 (
 "Julia Fonseca",
 "juliafonsecaLinda@gmail.com",
-"1140028922",
+"(11)94002-8922",
 "AV.rosas Brancas, 1000",
-"87569031832"
+"875.690.318-32"
 );
 
 create table tbl_veiculos(
@@ -85,7 +85,7 @@ create table tbl_reservas(
 id int auto_increment primary key,
 nome varchar(100) not null,
 email varchar(100) not null,
-telefone bigint not null,
+telefone varchar(20) not null,
 dataEntrada date not null,
 dataSaida date not null,
 horarioEntrada time not null,
@@ -103,7 +103,7 @@ horarioSaida
 )values(
 "Vitor Hugo",
 "vitorHugolixo123@gmail.com",
-"1140028922",
+"(11)94002-8922",
 "2024-05-14",
 "2024-05-15",
 "16:50:00",

@@ -8,3 +8,30 @@
  *          Vitor Hugo Nascimento da Silva;
  * Versão: 1.0 
  ********************************************************/
+
+const reservasDao = require('../model/DAO/reservas.js')
+const message = require('../modulo/config.js')
+
+const getListarReservas = async function () {
+    let jsonReservas = {}
+
+    const dadosReservas = await reservasDao.selectAllReservas()
+
+    if (dadosReservas) {
+        if (dadosReservas.length > 0) {
+            jsonReservas.reservas = dadosReservas
+            jsonReservas.quantidade = dadosReservas.length
+            jsonReservas.status_code = 200
+
+            return jsonReservas
+        } else {
+            return message.ERROR_NOT_FOUND
+        }
+    } else {
+        return message.ERROR_INTERNAL_SERVER_DB
+    }
+}
+
+module.exports = {
+    getListarReservas
+}

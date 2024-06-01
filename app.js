@@ -56,6 +56,39 @@ const bodyParserJson = bodyParser.json()
 
 
 
+/*************** Import dos arquivos internos do projeto ***************/
+
+const controllerAdministradores = require('./controller/controller_administradores.js')
+const controllerPagamento_Reserva = require('./controller/controller_pagamento_reservas.js')
+const controllerPagamentos = require('./controller/controller_pagamentos.js')
+const controllerReserva_vagas_administrador = require('./controller/controller_reserva_vagas_administrador.js')
+const controllerReserva_vagas_usuario = require('./controller/controller_reserva_vagas_usuario.js')
+const controllerReservas = require('./controller/controller_reservas.js')
+const controllerUsuario_veiculos = require('./controller/controller_usuario_veiculos.js')
+const controllerUsuarios = require('./controller/controller_usuarios.js')
+const controllerVagas = require('./controller/controller_vagas.js')
+const controllerVeiculos = require('./controller/controller_veiculos.js')
+
+/***********************************************************************/
+
+app.get('/v1/estacionaMais/administradores', cors(), async function (request, response, next) {
+
+    let dadosAdministradores = await controllerAdministradores.getListarAdministradores()
+
+    response.status(dadosAdministradores.status_code)
+    response.json(dadosAdministradores)
+})
+
+app.get('/v1/estacionaMais/administrador/:id', cors(), async function (request, response, next) {
+
+    let idAdministrador = request.params.id
+
+    let dadosAdministradores = await controllerAdministradores.getBuscarAdministradorById(idAdministrador)
+
+    response.status(dadosAdministradores.status_code)
+    response.json(dadosAdministradores)
+})
+
 app.listen(8080, function () {
     console.log('Serviço funcionando e aguardando requisições')
 })
