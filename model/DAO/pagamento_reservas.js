@@ -17,7 +17,11 @@ const prisma = new PrismaClient()
 
 const selectAllPagamento_reservas = async function () {
     try {
-        
+        let sql = `select * from tbl_administradores`
+
+        const rsAdministradores = await prisma.$queryRawUnsafe(sql)
+
+        return rsAdministradores
     } catch (error) {
         return false
     }

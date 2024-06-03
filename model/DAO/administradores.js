@@ -59,7 +59,14 @@ const updateAdministrador = async function (id, dadosAdministradorUpdate) {
         const keys = Object.keys(dadosAdministradorUpdate)
 
         keys.forEach((key, index) => {
-            sql += `${key} = '${dadosAdministradorUpdate[key]}'`
+            if(key != 'senha'){
+                sql += `${key} = '${dadosAdministradorUpdate[key]}'`
+            }
+
+            if(key == 'senha'){
+                sql += `${key} = aes_encrypt('${dadosAdministradorUpdate[key]}','chave')`
+            }
+
             if (index !== keys.length - 1) {
                 sql += `, `
             }
@@ -83,7 +90,8 @@ const insertAdministrador = async function (dadosAdministrador) {
                                                         email,
                                                         telefone,
                                                         endereco,
-                                                        cpf
+                                                        cpf,
+                                                        senha
                                                     )
                                                         values
                                                     (
@@ -91,7 +99,8 @@ const insertAdministrador = async function (dadosAdministrador) {
                                                         '${dadosAdministrador.email}',
                                                         '${dadosAdministrador.telefone}',
                                                         '${dadosAdministrador.endereco}',
-                                                        '${dadosAdministrador.cpf}'
+                                                        '${dadosAdministrador.cpf}',
+                                                        AES_ENCRYPT('${dadosAdministrador.senha}', 'chave')
                                                     )`
 
         const rsAdministradores = await prisma.$executeRawUnsafe(sql)
@@ -100,6 +109,7 @@ const insertAdministrador = async function (dadosAdministrador) {
 
         return rsAdministradores
     } catch (error) {
+        console.log(error);
         return false
     }
 }
