@@ -89,6 +89,41 @@ app.get('/v1/estacionaMais/administrador/:id', cors(), async function (request, 
     response.json(dadosAdministradores)
 })
 
+app.post('/v1/estacionaMais/inserirAdministrador/', cors(), bodyParserJson, async function (request, response, next) {
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let resultDados = await controllerAdministradores.setInserirAdministradores(contentType, dadosBody)
+
+    console.log(resultDados);
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.put('/v1/estacionaMais/updateAdministrador/:id', cors(), bodyParserJson, async function (request, response, next) {
+    let idUpdate = request.params.id
+    
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let resultDados = await controllerAdministradores.setAtualizarAdministrador(idUpdate, dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.delete('/v1/estacionaMais/deleteAdministrador/:id', cors(), async function (request, response, next) {
+
+    let idAdministrador = request.params.id
+
+    let resultDados = await controllerAdministradores.setDeletarAdministradorById(idAdministrador)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
 app.listen(8080, function () {
     console.log('Serviço funcionando e aguardando requisições')
 })

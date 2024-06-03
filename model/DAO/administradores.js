@@ -40,6 +40,19 @@ const selectByIdAdministrador = async function (id) {
     }
 }
 
+const selectLastIdAdministrador = async function () {
+    try {
+        let sql = `select cast(last_insert_id() as decimal) as id from tbl_administradores limit 1;`
+
+        const rsAdministradores = await prisma.$queryRawUnsafe(sql)
+
+        return rsAdministradores
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
 const updateAdministrador = async function (id, dadosAdministradorUpdate) {
     try {
         let sql = `UPDATE tbl_administradores SET `
@@ -54,11 +67,11 @@ const updateAdministrador = async function (id, dadosAdministradorUpdate) {
 
         sql += ` WHERE id = ${id}`
 
-        const rsAdministradores = await prisma.$queryRawUnsafe(sql)
+        const rsAdministradores = await prisma.$executeRawUnsafe(sql)
 
-        console.log(sql)
         return rsAdministradores
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -74,14 +87,16 @@ const insertAdministrador = async function (dadosAdministrador) {
                                                     )
                                                         values
                                                     (
-                                                        ${dadosAdministrador.nome},
-                                                        ${dadosAdministrador.email},
-                                                        ${dadosAdministrador.telefone},
-                                                        ${dadosAdministrador.endereco},
-                                                        ${dadosAdministrador.cpf}
+                                                        '${dadosAdministrador.nome}',
+                                                        '${dadosAdministrador.email}',
+                                                        '${dadosAdministrador.telefone}',
+                                                        '${dadosAdministrador.endereco}',
+                                                        '${dadosAdministrador.cpf}'
                                                     )`
 
-        const rsAdministradores = await prisma.$queryRawUnsafe(sql)
+        const rsAdministradores = await prisma.$executeRawUnsafe(sql)
+
+        console.log(rsAdministradores);
 
         return rsAdministradores
     } catch (error) {
@@ -124,7 +139,7 @@ const deleteAdministrador = async function (id) {
     try {
         let sql = `delete from tbl_administradores where id = ${id}`
 
-        const rsAdministradores = await prisma.$queryRawUnsafe(sql)
+        const rsAdministradores = await prisma.$executeRawUnsafe(sql)
 
         return rsAdministradores
     } catch (error) {
@@ -135,6 +150,7 @@ const deleteAdministrador = async function (id) {
 module.exports = {
     selectAllAdministradores,
     selectByIdAdministrador,
+    selectLastIdAdministrador,
     updateAdministrador,
     insertAdministrador,
     insertAdministradorLoop,
