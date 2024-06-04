@@ -39,6 +39,19 @@ const selectByIdVaga = async function () {
     }
 }
 
+const selectLastIdVaga = async function () {
+    try {
+        let sql = `select cast(last_insert_id() as decimal) as id from tbl_vagas limit 1;`
+
+        const rsVaga = await prisma.$queryRawUnsafe(sql)
+
+        return rsVaga
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
 const updateVaga = async function (id, dadosVagas) {
     try {
         let sql = `UPDATE tbl_vagas SET`
@@ -69,8 +82,8 @@ const insertVaga = async function (dadosVagas) {
                                             ) 
                                             values
                                                 (
-                                                '${dadosVagas.sigla_vaga}'
-                                                '${dadosVagas.tipo_vaga}'
+                                                '${dadosVagas.sigla_vaga}',
+                                                '${dadosVagas.tipo_vaga}',
                                                 '${dadosVagas.status_vaga}'
                                                 ) `
 
@@ -98,6 +111,7 @@ const deleteVaga = async function () {
 module.exports = {
     selectAllVagas,
     selectByIdVaga,
+    selectLastIdVaga,
     updateVaga,
     insertVaga,
     deleteVaga

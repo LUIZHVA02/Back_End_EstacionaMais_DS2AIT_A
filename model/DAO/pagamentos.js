@@ -40,6 +40,19 @@ const selectByIdPagamento = async function () {
     }
 }
 
+const selectLastIdPagamento = async function () {
+    try {
+        let sql = `select cast(last_insert_id() as decimal) as id from tbl_pagamentos limit 1;`
+
+        const rsPagamentos = await prisma.$queryRawUnsafe(sql)
+
+        return rsPagamentos
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
 const updatePagamento = async function (id, dadosPagamentos) {
     try {
         
@@ -99,6 +112,7 @@ const deletePagamento = async function () {
 module.exports = {
     selectAllPagamentos,
     selectByIdPagamento,
+    selectLastIdPagamento,
     updatePagamento,
     insertPagamento,
     deletePagamento

@@ -39,6 +39,19 @@ const selectByIdPagamento_reserva = async function () {
     }
 }
 
+const selectLastIdPagamento_reserva = async function () {
+    try {
+        let sql = `select cast(last_insert_id() as decimal) as id from tbl_pagamento_reserva limit 1;`
+
+        const rsPagamento_reservas = await prisma.$queryRawUnsafe(sql)
+
+        return rsPagamento_reservas
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
 const updatePagamento_reserva = async function (id, dadosPagamentoReserva) {
     try {
         let sql = `UPDATE tbl_pagamento_reserva SET`
@@ -70,7 +83,7 @@ const insertPagamento_reserva = async function (dadosPagamentoReserva) {
                                                      values
                                                      (
                                                         '${dadosPagamentoReserva.pagamento}',
-                                                        '${dadosPagamentoReserva.reserva}'
+                                                        '${dadosPagamentoReserva.reserva}',
                                                         '${dadosPagamentoReserva.usuario}'
                                                      )`
 
@@ -98,6 +111,7 @@ const deletePagamento_reserva = async function () {
 module.exports = {
     selectAllPagamento_reservas,
     selectByIdPagamento_reserva,
+    selectLastIdPagamento_reserva,
     updatePagamento_reserva,
     insertPagamento_reserva,
     deletePagamento_reserva

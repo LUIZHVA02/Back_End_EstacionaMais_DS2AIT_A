@@ -40,6 +40,19 @@ const selectByIdVeiculo = async function () {
     }
 }
 
+const selectLastIdVeiculo = async function () {
+    try {
+        let sql = `select cast(last_insert_id() as decimal) as id from tbl_veiculos limit 1;`
+
+        const rsVeiculo = await prisma.$queryRawUnsafe(sql)
+
+        return rsVeiculo
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
 const updateVeiculo = async function (id, dadosVeiculo) {
     try {
         let sql = `UPDATE tbl_veiculos SET`
@@ -75,12 +88,12 @@ const insertVeiculo = async function (dadosVeiculo) {
                                             )
                                             values
                                             (
-                                                ${dadosVeiculo.modelo}
-                                                ${dadosVeiculo.ano}
-                                                ${dadosVeiculo.placa}
-                                                ${dadosVeiculo.marca}
-                                                ${dadosVeiculo.cor}
-                                                ${dadosVeiculo.informacao}
+                                                '${dadosVeiculo.modelo}',
+                                                '${dadosVeiculo.ano}',
+                                                '${dadosVeiculo.placa}',
+                                                '${dadosVeiculo.marca}',
+                                                '${dadosVeiculo.cor}',
+                                                '${dadosVeiculo.informacao}'
                                             )`
     const rsVeiculos = await prisma.$executeRawUnsafe(sql)
 
@@ -106,6 +119,7 @@ const deleteVeiculo = async function () {
 module.exports = {
     selectAllVeiculos,
     selectByIdVeiculo,
+    selectLastIdVeiculo,
     updateVeiculo,
     insertVeiculo,
     deleteVeiculo
