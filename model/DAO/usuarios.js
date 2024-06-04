@@ -114,36 +114,36 @@ const insertUsuario = async function (dadosUsuario) {
     }
 }
 
-const insertUsuarioLoop = async function (dadosUsuario) {
-    try {
-        let sql = `insert into tbl_usuarios  (
-                                                        nome,
-                                                        email,
-                                                        telefone,
-                                                        endereco,
-                                                        cpf
-                                                    )
-                                                        values
-                                                    (`
-                                                    const keys = Object.keys(dadosUsuario)
+// const insertUsuarioLoop = async function (dadosUsuario) {
+//     try {
+//         let sql = `insert into tbl_usuarios  (
+//                                                         nome,
+//                                                         email,
+//                                                         telefone,
+//                                                         endereco,
+//                                                         cpf
+//                                                     )
+//                                                         values
+//                                                     (`
+//                                                     const keys = Object.keys(dadosUsuario)
                                             
-                                                    keys.forEach((key, index) => {
-                                                        sql += `${key} = '${dadosUsuario[key]}'`
-                                                        if (index !== keys.length - 1) {
-                                                            sql += `, `
-                                                        }
-                                                    })
+//                                                     keys.forEach((key, index) => {
+//                                                         sql += `${key} = '${dadosUsuario[key]}'`
+//                                                         if (index !== keys.length - 1) {
+//                                                             sql += `, `
+//                                                         }
+//                                                     })
 
-                                                    sql +=`)`
+//                                                     sql +=`)`
 
-        const rsUsuarios = await prisma.$queryRawUnsafe(sql)
+//         const rsUsuarios = await prisma.$queryRawUnsafe(sql)
 
-        console.log(rsUsuarios, sql)
-        return rsUsuarios
-    } catch (error) {
-        return false
-    }
-}
+//         console.log(rsUsuarios, sql)
+//         return rsUsuarios
+//     } catch (error) {
+//         return false
+//     }
+// }
 
 const deleteUsuario = async function (id) {
     try {

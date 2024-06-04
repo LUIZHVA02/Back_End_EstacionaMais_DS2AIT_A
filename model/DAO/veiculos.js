@@ -18,6 +18,11 @@ const prisma = new PrismaClient()
 const selectAllVeiculos = async function () {
     try {
         
+        let sql = `select * from tbl_veiculos`
+
+        const rsVeiculos = await prisma.$executeRawUnsafe(sql)
+        return rsVeiculos
+
     } catch (error) {
         return false
     }
@@ -26,22 +31,62 @@ const selectAllVeiculos = async function () {
 const selectByIdVeiculo = async function () {
     try {
         
+        let sql = `select * from tbl_veiculos where id = ${id}`
+        const rsVeiculos = await prisma.$queryRawUnsafe(sql)
+        return rsVeiculos
+
     } catch (error) {
         return false
     }
 }
 
-const updateVeiculo = async function () {
+const updateVeiculo = async function (id, dadosVeiculo) {
     try {
-        
+        let sql = `UPDATE tbl_veiculos SET`
+        const keys = Object.keys(dadosVeiculo)
+
+        keys.forEach((key, index) => {
+            sql += `${key} = '${dadosVeiculo[key]}'`
+            if(index !== keys.length - 1) {
+                sql += `,`
+            }
+        })
+
+        sql += `WHERE id = ${id}`
+
+        const rsVeiculos = await prisma.$executeRawUnsafe(sql)
+
+        return rsVeiculos
     } catch (error) {
         return false
     }
 }
 
-const insertVeiculo = async function () {
+const insertVeiculo = async function (dadosVeiculo) {
     try {
         
+        let sql = `insert into tbl_veiculos (
+                                                modelo,
+                                                ano,
+                                                placa,
+                                                marca,
+                                                cor,
+                                                informacao
+                                            )
+                                            values
+                                            (
+                                                ${dadosVeiculo.modelo}
+                                                ${dadosVeiculo.ano}
+                                                ${dadosVeiculo.placa}
+                                                ${dadosVeiculo.marca}
+                                                ${dadosVeiculo.cor}
+                                                ${dadosVeiculo.informacao}
+                                            )`
+    const rsVeiculos = await prisma.$executeRawUnsafe(sql)
+
+    console.log(rsVeiculos)
+    return rsVeiculos
+
     } catch (error) {
         return false
     }
@@ -49,7 +94,10 @@ const insertVeiculo = async function () {
 
 const deleteVeiculo = async function () {
     try {
-        
+        let sql = `delete from tbl_veiculos where id = ${id}`
+
+        const rsVeiculos = await prisma.$executeRawUnsafe(sql)
+        return rsVeiculos
     } catch (error) {
         return false
     }
