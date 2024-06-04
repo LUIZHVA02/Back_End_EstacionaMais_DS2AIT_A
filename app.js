@@ -71,6 +71,7 @@ const controllerVeiculos = require('./controller/controller_veiculos.js')
 
 /***********************************************************************/
 
+//Admin
 app.get('/v1/estacionaMais/administradores', cors(), async function (request, response, next) {
 
     let dadosAdministradores = await controllerAdministradores.getListarAdministradores()
@@ -124,6 +125,56 @@ app.delete('/v1/estacionaMais/deleteAdministrador/:id', cors(), async function (
     response.json(resultDados)
 })
 
+//Usuarios
+
+app.get('/v1/estacionaMais/usuarios', cors(), async function (request, response, next ){
+    let dadosUsuarios = await controllerUsuarios.getListarUsuarios()
+
+    response.status(dadosUsuarios.status_code)
+    response.json(dadosUsuarios)
+})
+
+app.get('/v1/estacionaMais/usuarios/:id', cors(), async function (resquest, response, next){
+    let idUsuario = resquest.params.id
+    let dadosUsuarios = await controllerUsuarios.getBuscarUsuarioById(idUsuario)
+
+    response.status(dadosUsuarios.status_code)
+    response.json(dadosUsuarios)
+})
+
+app.post('/v1/estacionaMais/inserirUsuarios', cors(), bodyParserJson, async function(request, response, next){
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+
+    let resultDados = await controllerUsuarios.setInserirUsuarios(contentType, dadosBody)
+
+    console.log(resultDados)
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.put('/v1/estacionaMais/updateUsuarios/:id', cors(), bodyParserJson, async function (request, response, next){
+    let idUpdate = request.params.id
+
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let resultDados = await controllerUsuarios.setAtualizarUsuario(idUpdate, dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.delete('/v1/estacionaMais/deleteUsuarios/:id', cors(), async function (request, response, next){
+    
+    let idUsuario = request.params.id
+    let resultDados = await controllerUsuarios.setDeletarUsuarioById(idUsuario)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
 app.listen(8080, function () {
     console.log('Serviço funcionando e aguardando requisições')
 })
