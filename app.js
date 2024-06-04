@@ -79,7 +79,6 @@ app.get('/v1/estacionaMais/administradores', cors(), async function (request, re
     response.status(dadosAdministradores.status_code)
     response.json(dadosAdministradores)
 })
-
 app.get('/v1/estacionaMais/administrador/:id', cors(), async function (request, response, next) {
 
     let idAdministrador = request.params.id
@@ -89,7 +88,6 @@ app.get('/v1/estacionaMais/administrador/:id', cors(), async function (request, 
     response.status(dadosAdministradores.status_code)
     response.json(dadosAdministradores)
 })
-
 app.post('/v1/estacionaMais/inserirAdministrador/', cors(), bodyParserJson, async function (request, response, next) {
     let contentType = request.headers['content-type']
 
@@ -101,7 +99,6 @@ app.post('/v1/estacionaMais/inserirAdministrador/', cors(), bodyParserJson, asyn
     response.status(resultDados.status_code)
     response.json(resultDados)
 })
-
 app.put('/v1/estacionaMais/updateAdministrador/:id', cors(), bodyParserJson, async function (request, response, next) {
     let idUpdate = request.params.id
     
@@ -114,7 +111,6 @@ app.put('/v1/estacionaMais/updateAdministrador/:id', cors(), bodyParserJson, asy
     response.status(resultDados.status_code)
     response.json(resultDados)
 })
-
 app.delete('/v1/estacionaMais/deleteAdministrador/:id', cors(), async function (request, response, next) {
 
     let idAdministrador = request.params.id
@@ -125,26 +121,20 @@ app.delete('/v1/estacionaMais/deleteAdministrador/:id', cors(), async function (
     response.json(resultDados)
 })
 
-
-
-
 //Usuarios
-
 app.get('/v1/estacionaMais/usuarios', cors(), async function (request, response, next ){
     let dadosUsuarios = await controllerUsuarios.getListarUsuarios()
 
     response.status(dadosUsuarios.status_code)
     response.json(dadosUsuarios)
 })
-
-app.get('/v1/estacionaMais/usuarios/:id', cors(), async function (resquest, response, next){
-    let idUsuario = resquest.params.id
+app.get('/v1/estacionaMais/usuarios/:id', cors(), async function (request, response, next){
+    let idUsuario = request.params.id
     let dadosUsuarios = await controllerUsuarios.getBuscarUsuarioById(idUsuario)
 
     response.status(dadosUsuarios.status_code)
     response.json(dadosUsuarios)
 })
-
 app.post('/v1/estacionaMais/inserirUsuarios', cors(), bodyParserJson, async function(request, response, next){
     let contentType = request.headers['content-type']
     let dadosBody = request.body
@@ -155,12 +145,9 @@ app.post('/v1/estacionaMais/inserirUsuarios', cors(), bodyParserJson, async func
     response.status(resultDados.status_code)
     response.json(resultDados)
 })
-
 app.put('/v1/estacionaMais/updateUsuarios/:id', cors(), bodyParserJson, async function (request, response, next){
     let idUpdate = request.params.id
-
     let contentType = request.headers['content-type']
-
     let dadosBody = request.body
 
     let resultDados = await controllerUsuarios.setAtualizarUsuario(idUpdate, dadosBody, contentType)
@@ -168,7 +155,6 @@ app.put('/v1/estacionaMais/updateUsuarios/:id', cors(), bodyParserJson, async fu
     response.status(resultDados.status_code)
     response.json(resultDados)
 })
-
 app.delete('/v1/estacionaMais/deleteUsuarios/:id', cors(), async function (request, response, next){
     
     let idUsuario = request.params.id
@@ -177,6 +163,161 @@ app.delete('/v1/estacionaMais/deleteUsuarios/:id', cors(), async function (reque
     response.status(resultDados.status_code)
     response.json(resultDados)
 
+})
+
+//Pagamento
+app.get('/v1/estacionaMais/pagamento', cors(), async function(request, response, next){
+    let dadosPagamento = await controllerPagamentos.getListarPagamento()
+
+    response.status(dadosPagamento.status_code)
+    response.json(dadosPagamento)
+})
+app.get('/v1/estacionaMais/pagamento/:id', cors(), async function(request, response, next){
+    let idPagamento = request.params.id
+    let dadosPagamento = await controllerPagamentos.getBuscarPagamentoById(idPagamento)
+
+    response.status(dadosPagamento.status_code)
+    response.json(dadosPagamento)
+})
+app.post('/v1/estacionaMais/inserirPagamento', cors(), bodyParserJson, async function(request, response, next){
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+
+    let resultDados = await controllerPagamentos.setInserirPagamentos(contentType, dadosBody)
+
+    console.log(resultDados)
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+
+//Vagas 
+app.get('/v1/estacionaMais/vagas', cors(), bodyParserJson, async function(request, response, next){
+    let dadosVagas = await controllerVagas.getListarVagas()
+
+    response.status(dadosVagas.status_code)
+    response.json(dadosVagas)
+})
+app.get('/v1/estacionaMais/vagas/:id', cors(), async function (request, response, next) {
+    let idVaga = request.params.id
+    let dadosVagas = await controllerVagas.getBuscarVagaById(idVaga)
+
+    response.status(dadosVagas.status_code)
+    response.json(dadosVagas)
+})
+app.post('/v1/estacionaMais/inserirVagas', cors(), bodyParserJson, async function(request, response, next) {
+
+    let contentType = request.headers['content-type']
+    dadosBody = request.body
+
+    let resultDados = await controllerVagas.setInserirVagas(contentType,dadosBody)
+
+    console.log(resultDados)
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+app.put('/v1/estacionaMais/updateVagas/:id', cors(), bodyParserJson, async function (request, response, next) {
+    let idUpdate = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+
+    let resultDados = await controllerVagas.setAtualizarVaga(idUpdate, dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+app.delete('/v1/estacionaMais/deleteVagas/:id', cors(), async function (request, response, next) {
+    let idVaga = request.params.id
+    let resultDados = await controllerVagas.setDeletarVagaById(idVaga)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+//Reservas
+app.get('/v1/estacionaMais/reservas', cors(), bodyParserJson, async function(request, response, next) {
+    let dadosReservas = await controllerReservas.getListarReservas()
+
+    response.status(dadosReservas.status_code)
+    response.json(dadosReservas)
+})
+app.get('/v1/estacionaMais/reservas/:id', cors(), async function(request, response, next) {
+    let idReserva = request.params.id
+    let dadosReservas = await controllerReservas.getBuscarReservasById(idReserva)
+
+    response.status(dadosReservas.status_code)
+    response.json(dadosReservas)
+})
+app.post('/v1/estacionaMais/inserirReservas', cors(), bodyParserJson, async function(request, response, next) {
+    let contentType = request.headers['content-type']
+    dadosBody = request.body
+
+    let resultDados = await controllerReservas.setInserirReservas(contentType, dadosBody)
+
+    console.log(resultDados)
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+app.put('/v1/estacionaMais/updateReservas/:id', cors(), bodyParserJson, async function (request, response, next) {
+    let idUpdate = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+
+    let resultDados = await controllerReservas.setAtualizarReservas(idUpdate, dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+app.delete('/v1/estacionaMais/deleteReservas/:id', cors(), bodyParserJson, async function(request, response, next) {
+    let idReserva = request.params.id
+    let resultDados = await controllerReservas.setDeletarReservasById(idReserva)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+//Veiculos
+app.get('/v1/estacionaMais/veiculos', cors(), bodyParserJson, async function(request, response, next) {
+    let dadosVeiculos = await controllerVeiculos.getListarVeiculos()
+
+    response.status(dadosVeiculos.status_code)
+    response.json(dadosVeiculos)
+})
+app.get('/v1/estacionaMais/veiculos/:id', cors(), async function(request, response, next) {
+    let idVeiculo = request.params.id
+    let dadosVeiculos = await controllerVeiculos.getListarVeiculos(idVeiculo)
+
+    response.status(dadosVeiculos.status_code)
+    response.json(dadosVeiculos)
+
+})
+app.post('/v1/estacionaMais/inserirVeiculos', cors(), bodyParserJson, async function(request, response, next) {
+    let contentType = request.headers['content-type']
+    dadosBody = request.body
+
+    let resultDados = await controllerVeiculos.setInserirVeiculos(contentType, dadosBody)
+
+    console.log(resultDados)
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+app.put('/v1/estacionaMais/updateVeiculos/:id', cors(), bodyParserJson, async function(request, response, next) {
+    let idUpdate = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+
+    let resultDados = await controllerVeiculos.setAtualizarVeiculo(idUpdate, dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+app.delete('/v1/estacionaMais/deleteVeiculos/:id', cors(), bodyParserJson, async function(request, response, next) {
+    let idVeiculo = request.params.id
+    let resultDados = await controllerVeiculos.setDeletarVeiculoById(idVeiculo)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
 })
 app.listen(8080, function () {
     console.log('Serviço funcionando e aguardando requisições')
