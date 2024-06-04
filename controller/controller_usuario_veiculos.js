@@ -102,9 +102,9 @@ const setInserirUsuario_veiculos = async function (contentType, dadosUsuario_vei
 
             let novoUsuario_veiculoJson = {}
             if (dadosUsuario_veiculo.id_usuario == "" || dadosUsuario_veiculo.id_usuario == undefined ||
-                dadosUsuario_veiculo.id_usuario == null || dadosUsuario_veiculo.id_usuario.length > 50 ||
+                dadosUsuario_veiculo.id_usuario == null || isNaN(dadosUsuario_veiculo.id_usuario)||
                 dadosUsuario_veiculo.id_veiculo == "" || dadosUsuario_veiculo.id_veiculo == undefined ||
-                dadosUsuario_veiculo.id_veiculo == null || dadosUsuario_veiculo.id_veiculo.length > 5 
+                dadosUsuario_veiculo.id_veiculo == null || isNaN(dadosUsuario_veiculo.id_veiculo)
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {

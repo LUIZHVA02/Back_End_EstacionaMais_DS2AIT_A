@@ -102,13 +102,13 @@ const setInserirReservas = async function (contentType, dadosReservas) {
 
             let novoReservasJson = {}
             if (dadosReservas.dataEntrada == "" || dadosReservas.dataEntrada == undefined ||
-                dadosReservas.dataEntrada == null || dadosReservas.dataEntrada ||
+                dadosReservas.dataEntrada == null || dadosReservas.dataEntrada.length != 10 ||
                 dadosReservas.dataSaida == "" || dadosReservas.dataSaida == undefined ||
-                dadosReservas.dataSaida == null || dadosReservas.dataSaida ||
+                dadosReservas.dataSaida == null || dadosReservas.dataSaida.length != 10 ||
                 dadosReservas.horarioEntrada == "" || dadosReservas.horarioEntrada == undefined ||
-                dadosReservas.horarioEntrada == null || dadosReservas.horarioEntrada ||
+                dadosReservas.horarioEntrada == null || dadosReservas.horarioEntrada.length < 8 ||
                 dadosReservas.horarioSaida == "" || dadosReservas.horarioSaida == undefined ||
-                dadosReservas.horarioSaida == null || dadosReservas.horarioSaida
+                dadosReservas.horarioSaida == null || dadosReservas.horarioSaida.length < 8
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {

@@ -172,7 +172,7 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
                     modelo != null &&
                     modelo.length < 100
                 ) {
-                    updateUsuario_veiculoJson.modelo = modelo.replace(/'/g, novoDigito)
+                    updateVeiculoJson.modelo = modelo.replace(/'/g, novoDigito)
                 } else if (
                     modelo == '' &&
                     modelo == undefined &&
@@ -186,7 +186,7 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
                     ano.length < 100
                 ) {
 
-                    updateUsuario_veiculoJson.ano = ano.replace(/'/g, novoDigito)
+                    updateVeiculoJson.ano = ano
                 } else if (
                     ano == '' &&
                     ano == undefined &&
@@ -199,7 +199,7 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
                     placa != null &&
                     placa.length == 20
                 ) {
-                    updateUsuario_veiculoJson.placa = placa
+                    updateVeiculoJson.placa = placa
                 } else if (
                     placa == '' &&
                     placa == undefined &&
@@ -212,7 +212,7 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
                     marca != null &&
                     marca.length == 300
                 ) {
-                    updateUsuario_veiculoJson.marca = marca
+                    updateVeiculoJson.marca = marca.replace(/'/g, novoDigito)
                 } else if (
                     marca == '' &&
                     marca == undefined &&
@@ -225,7 +225,7 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
                     cor != null &&
                     cor.length == 15
                 ) {
-                    updateUsuario_veiculoJson.cor = cor
+                    updateVeiculoJson.cor = cor.replace(/'/g, novoDigito)
                 } else if (
                     cor == '' &&
                     cor == undefined &&
@@ -239,14 +239,13 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
                     informacaoOriginal.length == 100
                 ) {
                     let informacao = informacaoOriginal.replace(/'/g, novoDigito)
-                    updateUsuario_veiculoJson.informacao = informacao.replace(/"/g, novoCarater)
+                    updateVeiculoJson.informacao = informacao.replace(/"/g, novoCarater)
 
                 } else if (
                     informacaoOriginal == '' &&
                     informacaoOriginal == undefined &&
                     informacaoOriginal == null
                 ) { }
-
 
                 const veiculoAtualizado = await veiculosDao.updateVeiculo(id, updateVeiculoJson)
 
