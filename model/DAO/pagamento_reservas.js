@@ -17,11 +17,7 @@ const prisma = new PrismaClient()
 
 const selectAllPagamento_reservas = async function () {
     try {
-        let sql = `select * from tbl_pagamento_reserva`
-
-        const rsPagamento_reserva = await prisma.$queryRawUnsafe(sql)
-
-        return rsPagamento_reserva
+        
     } catch (error) {
         return false
     }

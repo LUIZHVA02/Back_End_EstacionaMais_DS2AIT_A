@@ -12,6 +12,12 @@
 const administradoresDao = require('../model/DAO/administradores.js')
 const message = require('../modulo/config.js')
 
+const antigoDigito = `'`
+const novoDigito = `|`
+
+const antigoCarater = `"`
+const novoCarater = ` || `
+
 const getListarAdministradores = async function () {
     let jsonAdministradores = {}
 
@@ -104,7 +110,9 @@ const setInserirAdministradores = async function (contentType, dadosAdministrado
                 dadosAdministrador.endereco == "" || dadosAdministrador.endereco == undefined ||
                 dadosAdministrador.endereco == null || dadosAdministrador.endereco.length > 300 ||
                 dadosAdministrador.cpf == "" || dadosAdministrador.cpf == undefined ||
-                dadosAdministrador.cpf == null || dadosAdministrador.cpf.length > 15
+                dadosAdministrador.cpf == null || dadosAdministrador.cpf.length > 15 ||
+                dadosAdministrador.senha == "" || dadosAdministrador.senha == undefined ||
+                dadosAdministrador.senha == null || dadosAdministrador.senha.length > 100
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
@@ -156,6 +164,7 @@ const setAtualizarAdministrador = async function (id, dadosAdministradorUpdate, 
                 let telefone = dadosAdministradorUpdate.telefone
                 let endereco = dadosAdministradorUpdate.endereco
                 let cpf = dadosAdministradorUpdate.cpf
+                let senhaOriginal = dadosAdministradorUpdate.senha
 
                 if (
                     nome != '' &&
@@ -163,7 +172,7 @@ const setAtualizarAdministrador = async function (id, dadosAdministradorUpdate, 
                     nome != null &&
                     nome.length < 100
                 ) {
-                    updateAdministradorJson.nome = nome.replace(/'/g, "|")
+                    updateAdministradorJson.nome = nome.replace(/'/g, novoDigito)
                 } else if (
                     nome == '' &&
                     nome == undefined &&
@@ -177,7 +186,7 @@ const setAtualizarAdministrador = async function (id, dadosAdministradorUpdate, 
                     email.length < 100
                 ) {
 
-                    updateAdministradorJson.email = email.replace(/'/g, "|")
+                    updateAdministradorJson.email = email.replace(/'/g, novoDigito)
                 } else if (
                     email == '' &&
                     email == undefined &&
@@ -221,6 +230,21 @@ const setAtualizarAdministrador = async function (id, dadosAdministradorUpdate, 
                     cpf == '' &&
                     cpf == undefined &&
                     cpf == null
+                ) { }
+
+                if (
+                    senhaOriginal != '' &&
+                    senhaOriginal != undefined &&
+                    senhaOriginal != null &&
+                    senhaOriginal.length == 100
+                ) {
+                    let senha = senhaOriginal.replace(/'/g, novoDigito)
+                    updateAdministradorJson.senha = senha.replace(/"/g, novoCarater)
+
+                } else if (
+                    senhaOriginal == '' &&
+                    senhaOriginal == undefined &&
+                    senhaOriginal == null
                 ) { }
 
                 const administradorAtualizado = await administradoresDao.updateAdministrador(id, updateAdministradorJson)
