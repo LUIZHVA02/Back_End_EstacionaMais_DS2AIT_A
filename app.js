@@ -71,6 +71,104 @@ const controllerVeiculos = require('./controller/controller_veiculos.js')
 
 /***********************************************************************/
 
+// Reserva Usuario
+app.get('/v1/estacionaMais/reservaVagasUsuario', cors(), async function (request, response, next) {
+
+    let dadosUsuarioVagas = await controllerReserva_vagas_usuario.getListarReserva_vagas_usuario()
+
+    response.status(dadosUsuarioVagas)
+    response.json(dadosUsuarioVagas)
+
+})
+app.get('/v1/estacionaMais/reservaVagasUsuario/:id', cors(), async function (request, response, next) {
+
+    let idVagasUsuarios = request.params.id
+    let dadosReservaUsuario = await controllerReserva_vagas_usuario.getBuscarReserva_vagas_usuarioById(idVagasUsuarios)
+
+    response.status(dadosReservaUsuario)
+    response.json(dadosReservaUsuario)
+
+})
+app.post('/v1/estacionaMais/inserirReservaVagasUsuario', cors(), bodyParserJson, async function(request, response, next) {
+    
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+    let resultDados = await controllerReserva_vagas_usuario.setInserirReserva_vagas_usuarios(contentType, dadosBody)
+
+    console.log(resultDados)
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+app.put('/v1/estacionaMais/updateReservaVagasUsuario/:id', cors(), bodyParserJson, async function(request, response, next) {
+
+    let idUpdate = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+
+    let resultDados = await controllerReserva_vagas_usuario.setAtualizarReserva_vagas_usuario(idUpdate, dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+app.delete('/v1/estacionaMais/deleteReservaVagasUsuario/:id', cors(), async function(request, response, next) {
+    let idUsuarioReservaVagas = request.params.id
+    let resultDados = await controllerReserva_vagas_usuario.setDeletarReserva_vagas_usuarioById(idUsuarioReservaVagas)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+// Reserva Admin
+app.get('/v1/estacionaMais/reservaVagasAdministrador', cors(), async function (request, response, next) {
+    let dadosAdministradoresVagas = await controllerReserva_vagas_administrador.getListarReserva_vagas_Administrador()
+
+    response.status(dadosAdministradoresVagas.status_code)
+    response.json(dadosAdministradoresVagas)
+})
+app.get('/v1/estacionaMais/reservaVagasAdministrador/:id', cors(), async function (request, response, next) {
+  
+    let idAdministradorVagas = request.params.id
+    let dadosAdministradoresVagas = await controllerReserva_vagas_administrador.getBuscarReserva_vagas_AdministradorById(idAdministradorVagas)
+
+    response.status(dadosAdministradoresVagas.status_code)
+    response.json(dadosAdministradoresVagas)
+
+
+})
+app.post('/v1/estacionaMais/inserirVagasAdministrador', cors(),bodyParserJson, async function (request, response, next) {
+    
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+    let resultDados = await controllerReserva_vagas_administrador.setInserirReserva_vagas_Administradors(contentType, dadosBody)
+
+    console.log(resultDados)
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+app.put('/v1/estacionaMais/updateVagasAdministrador/:id', cors(),bodyParserJson, async function (request, response, next) {
+
+    let idUpdate = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+
+    let resultDados = await controllerReserva_vagas_administrador.setAtualizarReserva_vagas_Administrador(idUpdate, dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+app.delete('/v1/estacionaMais/deleteVagasAdministrador/:id', cors(), async function (request, response, next) {
+    
+    let idAdministradorReservaVagas = request.params.id
+    let resultDados = await controllerReserva_vagas_administrador.setDeletarReserva_vagas_AdministradorById(idAdministradorReservaVagas)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+
 //Admin
 app.get('/v1/estacionaMais/administradores', cors(), async function (request, response, next) {
 
@@ -121,7 +219,7 @@ app.delete('/v1/estacionaMais/deleteAdministrador/:id', cors(), async function (
     response.json(resultDados)
 })
 
-
+//Usuarios
 app.get('/v1/estacionaMais/usuarios', cors(), async function (request, response, next ){
     let dadosUsuarios = await controllerUsuarios.getListarUsuarios()
 
@@ -189,7 +287,6 @@ app.post('/v1/estacionaMais/inserirPagamento', cors(), bodyParserJson, async fun
     response.status(resultDados.status_code)
     response.json(resultDados)
 })
-
 
 // Pagamento Reserva
 app.get('/v1/estacionaMais/pagamentoReserva', cors(), bodyParserJson, async function(request, response, next){
