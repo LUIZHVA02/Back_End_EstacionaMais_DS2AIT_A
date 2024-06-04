@@ -9,7 +9,7 @@
  * Versão: 1.0 
  ********************************************************/
 
-const Reserva_vagas_AdministradorsDao = require('../model/DAO/Reserva_vagas_Administradors.js')
+const reserva_vagas_AdministradoresDao = require('../model/DAO/reserva_vagas_administrador.js')
 const message = require('../modulo/config.js')
 
 const antigoDigito = `'`
@@ -22,7 +22,7 @@ const getListarReserva_vagas_Administrador = async function () {
     let jsonReserva_vagas_Administradors = {}
 
     try {
-        const dadosReserva_vagas_Administradors = await Reserva_vagas_AdministradorsDao.selectAllReserva_vagas_Administradors()
+        const dadosReserva_vagas_Administradors = await reserva_vagas_AdministradoresDao.selectAllReserva_vaga_administrador()
 
         if (dadosReserva_vagas_Administradors) {
             if (dadosReserva_vagas_Administradors.length > 0) {
@@ -50,7 +50,7 @@ const getBuscarReserva_vagas_AdministradorById = async function (id) {
         if (id == "" || id == undefined || isNaN(id)) {
             return message.ERROR_INVALID_ID
         } else {
-            const dadosReserva_vagas_Administrador = await Reserva_vagas_AdministradorsDao.selectByIdReserva_vagas_Administrador(id)
+            const dadosReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.selectByIdReserva_vaga_administrador(id)
 
             if (dadosReserva_vagas_Administrador) {
                 if (dadosReserva_vagas_Administrador.length > 0) {
@@ -76,7 +76,7 @@ const getBuscarUltimoReserva_vagas_AdministradorInserido = async function () {
     let jsonReserva_vagas_Administrador = {}
 
     try {
-        const idUltimoReserva_vagas_Administrador = await Reserva_vagas_AdministradorsDao.selectLastIdReserva_vagas_Administrador()
+        const idUltimoReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.selectLastIdReserva_vaga_administrador()
 
         if (idUltimoReserva_vagas_Administrador) {
             if (idUltimoReserva_vagas_Administrador.length > 0) {
@@ -101,19 +101,21 @@ const setInserirReserva_vagas_Administradors = async function (contentType, dado
         if (String(contentType).toLocaleLowerCase() === "application/json") {
 
             let novoReserva_vagas_AdministradorJson = {}
-            if (dadosReserva_vagas_Administrador.id_pagamento == "" || dadosReserva_vagas_Administrador.id_pagamento == undefined ||
-                dadosReserva_vagas_Administrador.id_pagamento == null || isNaN(dadosReserva_vagas_Administrador.id_pagamento) ||
+            if (dadosReserva_vagas_Administrador.id_vaga == "" || dadosReserva_vagas_Administrador.id_vaga == undefined ||
+                dadosReserva_vagas_Administrador.id_vaga == null || isNaN(dadosReserva_vagas_Administrador.id_vaga) ||
                 dadosReserva_vagas_Administrador.id_reserva == "" || dadosReserva_vagas_Administrador.id_reserva == undefined ||
                 dadosReserva_vagas_Administrador.id_reserva == null || isNaN(dadosReserva_vagas_Administrador.id_reserva) ||
-                dadosReserva_vagas_Administrador.id_usuario == "" || dadosReserva_vagas_Administrador.id_usuario == undefined ||
-                dadosReserva_vagas_Administrador.id_usuario == null || isNaN(dadosReserva_vagas_Administrador.id_usuario)
+                dadosReserva_vagas_Administrador.id_veiculo == "" || dadosReserva_vagas_Administrador.id_veiculo == undefined ||
+                dadosReserva_vagas_Administrador.id_veiculo == null || isNaN(dadosReserva_vagas_Administrador.id_veiculo) ||
+                dadosReserva_vagas_Administrador.id_administrador == "" || dadosReserva_vagas_Administrador.id_administrador == undefined ||
+                dadosReserva_vagas_Administrador.id_administrador == null || isNaN(dadosReserva_vagas_Administrador.id_administrador)
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
-                let novoReserva_vagas_Administrador = await Reserva_vagas_AdministradorsDao.insertReserva_vagas_Administrador(dadosReserva_vagas_Administrador)
+                let novoReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.insertReserva_vaga_administrador(dadosReserva_vagas_Administrador)
 
                 if (novoReserva_vagas_Administrador) {
-                    let idNovoReserva_vagas_Administrador = await Reserva_vagas_AdministradorsDao.selectLastIdReserva_vagas_Administrador()
+                    let idNovoReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.selectLastIdReserva_vaga_administrador()
 
                     if (idNovoReserva_vagas_Administrador) {
                         novoReserva_vagas_AdministradorJson.status = message.SUCCES_CREATED_ITEM.status
@@ -153,21 +155,21 @@ const setAtualizarReserva_vagas_Administrador = async function (id, dadosReserva
             if (validaId) {
 
                 let id = validaId.reserva_vagas_Administrador[0].id
-                let id_pagamento = dadosReserva_vagas_AdministradorUpdate.id_pagamento
-                let id_reserva = dadosReserva_vagas_AdministradorUpdate.id_reserva
-                let id_usuario = dadosReserva_vagas_AdministradorUpdate.id_usuario
+                let id_vaga = dadosReserva_vagas_AdministradorUpdate.id_vaga
+                let id_veiculo = dadosReserva_vagas_AdministradorUpdate.id_veiculo
+                let id_administrador = dadosReserva_vagas_AdministradorUpdate.id_administrador
 
                 if (
-                    id_pagamento != '' &&
-                    id_pagamento != undefined &&
-                    id_pagamento != null &&
-                    id_pagamento.length < 100
+                    id_vaga != '' &&
+                    id_vaga != undefined &&
+                    id_vaga != null &&
+                    id_vaga.length < 100
                 ) {
-                    updateReserva_vagas_AdministradorJson.id_pagamento = id_pagamento
+                    updateReserva_vagas_AdministradorJson.id_vaga = id_vaga
                 } else if (
-                    id_pagamento == '' &&
-                    id_pagamento == undefined &&
-                    id_pagamento == null
+                    id_vaga == '' &&
+                    id_vaga == undefined &&
+                    id_vaga == null
                 ) { }
 
                 if (
@@ -184,21 +186,34 @@ const setAtualizarReserva_vagas_Administrador = async function (id, dadosReserva
                 ) { }
 
                 if (
-                    id_usuario != '' &&
-                    id_usuario != undefined &&
-                    id_usuario != null &&
-                    id_usuario.length == 20
+                    id_veiculo != '' &&
+                    id_veiculo != undefined &&
+                    id_veiculo != null &&
+                    id_veiculo.length < 100
                 ) {
-                    updateReserva_vagas_AdministradorJson.id_usuario = id_usuario
+                    updateReserva_vagas_AdministradorJson.id_veiculo = id_veiculo
                 } else if (
-                    id_usuario == '' &&
-                    id_usuario == undefined &&
-                    id_usuario == null
+                    id_veiculo == '' &&
+                    id_veiculo == undefined &&
+                    id_veiculo == null
                 ) { }
 
-                const Reserva_vagas_AdministradorAtualizado = await Reserva_vagas_AdministradorsDao.updateReserva_vagas_Administrador(id, updateReserva_vagas_AdministradorJson)
+                if (
+                    id_administrador != '' &&
+                    id_administrador != undefined &&
+                    id_administrador != null &&
+                    id_administrador.length == 20
+                ) {
+                    updateReserva_vagas_AdministradorJson.id_administrador = id_administrador
+                } else if (
+                    id_administrador == '' &&
+                    id_administrador == undefined &&
+                    id_administrador == null
+                ) { }
 
-                if (Reserva_vagas_AdministradorAtualizado) {
+                const reserva_vagas_AdministradorAtualizado = await reserva_vagas_AdministradoresDao.updateReserva_vaga_administrador(id, updateReserva_vagas_AdministradorJson)
+
+                if (reserva_vagas_AdministradorAtualizado) {
                     resultUpdateReserva_vagas_AdministradorJson.id = id
                     resultUpdateReserva_vagas_AdministradorJson.status = message.SUCCES_UPDATED_ITEM.status
                     resultUpdateReserva_vagas_AdministradorJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
@@ -234,7 +249,7 @@ const setDeletarReserva_vagas_AdministradorById = async function (id) {
             if (validaId) {
                 const id = validaId.reserva_vagas_Administrador[0].id
 
-                const apagarReserva_vagas_Administrador = await Reserva_vagas_AdministradorsDao.deleteReserva_vagas_Administrador(id)
+                const apagarReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.deleteReserva_vaga_administrador(id)
 
                 if (apagarReserva_vagas_Administrador) {
                     jsonDeleteReserva_vagas_Administrador.status = message.SUCCES_DELETED_ITEM.status

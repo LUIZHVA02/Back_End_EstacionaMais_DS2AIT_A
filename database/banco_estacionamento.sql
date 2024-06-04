@@ -69,7 +69,14 @@ create table tbl_veiculos(
 );
 
 insert into
-    tbl_veiculos(modelo, ano, placa, marca, cor, informacao)
+    tbl_veiculos(
+					modelo, 
+					ano, 
+					placa, 
+					marca, 
+					cor, 
+					informacao
+				)
 values
     (
         "Civic",

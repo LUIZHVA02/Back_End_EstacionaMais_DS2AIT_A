@@ -125,6 +125,9 @@ app.delete('/v1/estacionaMais/deleteAdministrador/:id', cors(), async function (
     response.json(resultDados)
 })
 
+
+
+
 //Usuarios
 
 app.get('/v1/estacionaMais/usuarios', cors(), async function (request, response, next ){
