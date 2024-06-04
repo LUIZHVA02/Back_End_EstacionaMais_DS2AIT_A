@@ -80,7 +80,7 @@ const insertPagamento_reserva = async function (dadosPagamentoReserva) {
                                                         id_reserva,
                                                         id_usuario
                                                      ) 
-                                                     values
+                                                        values
                                                      (
                                                         '${dadosPagamentoReserva.pagamento}',
                                                         '${dadosPagamentoReserva.reserva}',

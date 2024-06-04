@@ -18,38 +18,98 @@ const prisma = new PrismaClient()
 const selectAllReservas = async function () {
     try {
         
+        let sql = `select * from tbl_reservas`
+
+        const rsReservas = await prisma.$queryRawUnsafe(sql)
+        return rsReservas
+
     } catch (error) {
         return false
     }
 }
 
-const selectByIdReserva = async function () {
+const selectByIdReservas = async function () {
     try {
-        
+
+        let sql = `select * from tbl_reservas where id = ${id}`
+        const rsReservas = await prisma.$queryRawUnsafe(sql)
+        return rsReservas
+
     } catch (error) {
         return false
     }
 }
 
-const updateReserva = async function () {
+const selectLastIdReservas = async function () {
+    try {
+        let sql = `select cast(last_insert_id() as decimal) as id from tbl_reservas limit 1;`
+
+        const rsReservas = await prisma.$queryRawUnsafe(sql)
+
+        return rsReservas
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
+const updateReservas = async function (id, dadosReservas) {
     try {
         
+        let sql = `UPDATE tbl_reservas SET`
+        const keys = Object.keys(dadosReservas)
+
+        keys.forEach((key, index) => {
+            sql += `${key} = '${dadosReservas[key]}'`
+            if(index !== keys.length - 1) {
+                sql += `,`
+            }
+        })
+
+        sql += `WHERE id = ${id}`
+
+        const rsReservas = await prisma.$executeRawUnsafe(sql)
+
+        return rsReservas
+
     } catch (error) {
         return false
     }
 }
 
-const insertReserva = async function () {
+const insertReservas = async function (dadosReservas) {
     try {
         
+        let sql = `insert into tbl_reservas (
+                                                dataEntrada,
+                                                dataSaida,
+                                                horarioEntrada,
+                                                horarioSaida
+                                            )
+                                                values
+                                            (
+                                                '${dadosReservas.dataEntrada}',
+                                                '${dadosReservas.dataSaida}',
+                                                '${dadosReservas.horarioEntrada}',
+                                                '${dadosReservas.horarioSaida}'
+                                            );`
+        
+        const rsReservas = await prisma.$executeRawUnsafe(sql)
+
+        console.log(rsReservas)
+        return rsReservas
     } catch (error) {
         return false
     }
 }
 
-const deleteReserva = async function () {
+const deleteReservas = async function () {
     try {
-        
+        let sql = `delete from tbl_reservas where id = ${id}`
+
+        const rsReservas = await prisma.$executeRawUnsafe(sql)
+
+        return rsReservas
     } catch (error) {
         return false
     }
@@ -57,8 +117,9 @@ const deleteReserva = async function () {
 
 module.exports = {
     selectAllReservas,
-    selectByIdReserva,
-    updateReserva,
-    insertReserva,
-    deleteReserva
+    selectByIdReservas,
+    selectLastIdReservas,
+    updateReservas,
+    insertReservas,
+    deleteReservas
 }
