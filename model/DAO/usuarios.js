@@ -163,6 +163,5 @@ module.exports = {
     selectLastIdUsuario,
     updateUsuario,
     insertUsuario,
-    insertUsuarioLoop,
     deleteUsuario
 }
