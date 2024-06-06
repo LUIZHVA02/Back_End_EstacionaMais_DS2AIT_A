@@ -238,8 +238,7 @@ const setAtualizarAdministrador = async function (id, dadosAdministradorUpdate, 
                     senhaOriginal != null &&
                     senhaOriginal.length == 100
                 ) {
-                    let senha = senhaOriginal.replace(/'/g, novoDigito)
-                    updateAdministradorJson.senha = senha.replace(/"/g, novoCarater)
+                    updateAdministradorJson.senha = senha.replace(/'/g, novoDigito)
 
                 } else if (
                     senhaOriginal == '' &&

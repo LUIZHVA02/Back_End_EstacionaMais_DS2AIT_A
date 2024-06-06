@@ -55,7 +55,7 @@ const getBuscarUsuarioById = async function (id) {
 
             if (dadosUsuario) {
                 if (dadosUsuario.length > 0) {
-                    jsonUsuario.Usuario = dadosUsuario
+                    jsonUsuario.usuario = dadosUsuario
                     jsonUsuario.status_code = 200
 
                     return jsonUsuario
@@ -158,7 +158,6 @@ const setAtualizarUsuario = async function (id, dadosUsuarioUpdate, content) {
             const validaId = await getBuscarUsuarioById(id)
 
             if (validaId) {
-
                 let id = validaId.usuario[0].id
                 let nome = dadosUsuarioUpdate.nome
                 let email = dadosUsuarioUpdate.email

@@ -101,18 +101,18 @@ const setInserirVeiculos = async function (contentType, dadosVeiculo) {
         if (String(contentType).toLocaleLowerCase() === "application/json") {
 
             let novaVeiculoJson = {}
-            if (dadosUsuario_veiculo.modelo == "" || dadosUsuario_veiculo.modelo == undefined ||
-                dadosUsuario_veiculo.modelo == null || dadosUsuario_veiculo.modelo.length > 50 ||
-                dadosUsuario_veiculo.ano == "" || dadosUsuario_veiculo.ano == undefined ||
-                dadosUsuario_veiculo.ano == null || dadosUsuario_veiculo.ano.length > 5 ||
-                dadosUsuario_veiculo.placa == "" || dadosUsuario_veiculo.placa == undefined ||
-                dadosUsuario_veiculo.placa == null || dadosUsuario_veiculo.placa.length > 8 ||
-                dadosUsuario_veiculo.marca == "" || dadosUsuario_veiculo.marca == undefined ||
-                dadosUsuario_veiculo.marca == null || dadosUsuario_veiculo.marca.length > 50 ||
-                dadosUsuario_veiculo.cor == "" || dadosUsuario_veiculo.cor == undefined ||
-                dadosUsuario_veiculo.cor == null || dadosUsuario_veiculo.cor.length > 50 ||
-                dadosUsuario_veiculo.informacao == "" || dadosUsuario_veiculo.informacao == undefined ||
-                dadosUsuario_veiculo.informacao == null || dadosUsuario_veiculo.informacao.length > 300
+            if (dadosVeiculo.modelo == "" || dadosVeiculo.modelo == undefined ||
+                dadosVeiculo.modelo == null || dadosVeiculo.modelo.length > 50 ||
+                dadosVeiculo.ano == "" || dadosVeiculo.ano == undefined ||
+                dadosVeiculo.ano == null || dadosVeiculo.ano.length > 5 ||
+                dadosVeiculo.placa == "" || dadosVeiculo.placa == undefined ||
+                dadosVeiculo.placa == null || dadosVeiculo.placa.length > 8 ||
+                dadosVeiculo.marca == "" || dadosVeiculo.marca == undefined ||
+                dadosVeiculo.marca == null || dadosVeiculo.marca.length > 50 ||
+                dadosVeiculo.cor == "" || dadosVeiculo.cor == undefined ||
+                dadosVeiculo.cor == null || dadosVeiculo.cor.length > 50 ||
+                dadosVeiculo.informacao == "" || dadosVeiculo.informacao == undefined ||
+                dadosVeiculo.informacao == null || dadosVeiculo.informacao.length > 300
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
@@ -157,25 +157,24 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
             const validaId = await getBuscarVeiculoById(id)
 
             if (validaId) {
-
-                let id = validaId.usuario_veiculo[0].id
-                let modelo = dadosUsuario_veiculoUpdate.modelo
-                let ano = dadosUsuario_veiculoUpdate.ano
-                let placa = dadosUsuario_veiculoUpdate.placa
-                let marca = dadosUsuario_veiculoUpdate.marca
-                let cor = dadosUsuario_veiculoUpdate.cor
-                let informacaoOriginal = dadosUsuario_veiculoUpdate.informacao
+                let id = validaId.veiculo[0].id
+                let modelo = dadosVeiculoUpdate.modelo
+                let ano = dadosVeiculoUpdate.ano
+                let placa = dadosVeiculoUpdate.placa
+                let marca = dadosVeiculoUpdate.marca
+                let cor = dadosVeiculoUpdate.cor
+                let informacao = dadosVeiculoUpdate.informacao
 
                 if (
                     modelo != '' &&
                     modelo != undefined &&
                     modelo != null &&
-                    modelo.length < 100
+                    modelo.length <= 50
                 ) {
                     updateVeiculoJson.modelo = modelo.replace(/'/g, novoDigito)
                 } else if (
-                    modelo == '' &&
-                    modelo == undefined &&
+                    modelo == '' ||
+                    modelo == undefined ||
                     modelo == null
                 ) { }
 
@@ -183,13 +182,13 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
                     ano != '' &&
                     ano != undefined &&
                     ano != null &&
-                    ano.length < 100
+                    ano.length <= 6
                 ) {
 
                     updateVeiculoJson.ano = ano
                 } else if (
-                    ano == '' &&
-                    ano == undefined &&
+                    ano == '' ||
+                    ano == undefined ||
                     ano == null
                 ) { }
 
@@ -197,12 +196,12 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
                     placa != '' &&
                     placa != undefined &&
                     placa != null &&
-                    placa.length == 20
+                    placa.length <= 8
                 ) {
                     updateVeiculoJson.placa = placa
                 } else if (
-                    placa == '' &&
-                    placa == undefined &&
+                    placa == '' ||
+                    placa == undefined ||
                     placa == null
                 ) { }
 
@@ -210,12 +209,12 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
                     marca != '' &&
                     marca != undefined &&
                     marca != null &&
-                    marca.length == 300
+                    marca.length <= 50
                 ) {
                     updateVeiculoJson.marca = marca.replace(/'/g, novoDigito)
                 } else if (
-                    marca == '' &&
-                    marca == undefined &&
+                    marca == '' ||
+                    marca == undefined ||
                     marca == null
                 ) { }
 
@@ -223,30 +222,30 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
                     cor != '' &&
                     cor != undefined &&
                     cor != null &&
-                    cor.length == 15
+                    cor.length <= 50
                 ) {
                     updateVeiculoJson.cor = cor.replace(/'/g, novoDigito)
                 } else if (
-                    cor == '' &&
-                    cor == undefined &&
+                    cor == '' ||
+                    cor == undefined ||
                     cor == null
                 ) { }
 
                 if (
-                    informacaoOriginal != '' &&
-                    informacaoOriginal != undefined &&
-                    informacaoOriginal != null &&
-                    informacaoOriginal.length == 100
+                    informacao != '' &&
+                    informacao != undefined &&
+                    informacao != null &&
+                    informacao.length <= 300
                 ) {
-                    let informacao = informacaoOriginal.replace(/'/g, novoDigito)
-                    updateVeiculoJson.informacao = informacao.replace(/"/g, novoCarater)
+                    updateVeiculoJson.informacao = informacao.replace(/'/g, novoDigito)
 
                 } else if (
-                    informacaoOriginal == '' &&
-                    informacaoOriginal == undefined &&
-                    informacaoOriginal == null
+                    informacao == '' ||
+                    informacao == undefined ||
+                    informacao == null
                 ) { }
 
+                console.log(dadosVeiculoUpdate,updateVeiculoJson);
                 const veiculoAtualizado = await veiculosDao.updateVeiculo(id, updateVeiculoJson)
 
                 if (veiculoAtualizado) {
@@ -258,6 +257,7 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
 
                     return resultUpdateVeiculoJson
                 } else {
+                    console.log(veiculoAtualizado);
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
             } else {
@@ -295,11 +295,11 @@ const setDeletarVeiculoById = async function (id) {
 
                     return jsonDeleteVeiculo
                 } else {
-                    console.log(dadosVeiculo);
+                    console.log(validaId,apagarVeiculo);
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
             } else {
-
+                return message.ERROR_NOT_FOUND
             }
         }
     } catch (error) {

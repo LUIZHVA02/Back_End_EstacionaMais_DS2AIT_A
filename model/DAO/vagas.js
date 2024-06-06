@@ -54,7 +54,7 @@ const selectLastIdVaga = async function () {
 
 const updateVaga = async function (id, dadosVagas) {
     try {
-        let sql = `UPDATE tbl_vagas SET`
+        let sql = `UPDATE tbl_vagas SET `
         const keys = Object.keys(dadosVagas)
 
         keys.forEach((key, index) => {
