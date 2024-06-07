@@ -28,7 +28,7 @@ const selectAllReservas = async function () {
     }
 }
 
-const selectByIdReservas = async function () {
+const selectByIdReservas = async function (id) {
     try {
 
         let sql = `select * from tbl_reservas where id = ${id}`
@@ -56,7 +56,7 @@ const selectLastIdReservas = async function () {
 const updateReservas = async function (id, dadosReservas) {
     try {
         
-        let sql = `UPDATE tbl_reservas SET`
+        let sql = `UPDATE tbl_reservas SET `
         const keys = Object.keys(dadosReservas)
 
         keys.forEach((key, index) => {
@@ -66,7 +66,7 @@ const updateReservas = async function (id, dadosReservas) {
             }
         })
 
-        sql += `WHERE id = ${id}`
+        sql += ` WHERE id = ${id}`
 
         const rsReservas = await prisma.$executeRawUnsafe(sql)
 
@@ -103,7 +103,7 @@ const insertReservas = async function (dadosReservas) {
     }
 }
 
-const deleteReservas = async function () {
+const deleteReservas = async function (id) {
     try {
         let sql = `delete from tbl_reservas where id = ${id}`
 

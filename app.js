@@ -122,7 +122,7 @@ app.delete('/v1/estacionaMais/deleteAdministrador/:id', cors(), async function (
 })
 
 // Pagamento Reserva
-app.get('/v1/estacionaMais/pagamentoReserva', cors(), bodyParserJson, async function (request, response, next) {
+app.get('/v1/estacionaMais/pagamentoReservas', cors(), bodyParserJson, async function (request, response, next) {
     let dadosPagamentoReserva = await controllerPagamento_Reserva.getListarPagamento_reservas()
 
     response.status(dadosPagamentoReserva.status_code)
@@ -145,9 +145,29 @@ app.post('/v1/estacionaMais/inserirPagamentoReserva', cors(), bodyParserJson, as
     response.status(resultDados.status_code)
     response.json(resultDados)
 })
+app.put('/v1/estacionaMais/updatePagamentoReserva/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idUpdate = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+
+    let resultDados = await controllerPagamento_Reserva.setAtualizarPagamento_reserva(idUpdate, dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+app.delete('/v1/estacionaMais/deletePagamentoReserva/:id', cors(), async function (request, response, next) {
+
+    let idPagamentoReserva = request.params.id
+    let resultDados = await controllerPagamento_Reserva.setDeletarPagamento_reservaById(idPagamentoReserva)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
 
 // Pagamento
-app.get('/v1/estacionaMais/pagamento', cors(), async function (request, response, next) {
+app.get('/v1/estacionaMais/pagamentos', cors(), async function (request, response, next) {
     let dadosPagamento = await controllerPagamentos.getListarPagamento()
 
     response.status(dadosPagamento.status_code)
@@ -167,6 +187,26 @@ app.post('/v1/estacionaMais/inserirPagamento', cors(), bodyParserJson, async fun
     let resultDados = await controllerPagamentos.setInserirPagamentos(contentType, dadosBody)
 
     console.log(resultDados)
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+app.put('/v1/estacionaMais/updatePagamento/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idUpdate = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+
+    let resultDados = await controllerPagamentos.setAtualizarPagamento(idUpdate, dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+app.delete('/v1/estacionaMais/deletePagamento/:id', cors(), async function (request, response, next) {
+
+    let idPagamento = request.params.id
+    let resultDados = await controllerPagamentos.setDeletarPagamentoById(idPagamento)
+
     response.status(resultDados.status_code)
     response.json(resultDados)
 })
@@ -270,7 +310,7 @@ app.delete('/v1/estacionaMais/deleteReservaVagasUsuario/:id', cors(), async func
 })
 
 //Reservas
-app.get('/v1/estacionaMais/reserva', cors(), bodyParserJson, async function (request, response, next) {
+app.get('/v1/estacionaMais/reservas', cors(), bodyParserJson, async function (request, response, next) {
     let dadosReservas = await controllerReservas.getListarReservas()
 
     response.status(dadosReservas.status_code)

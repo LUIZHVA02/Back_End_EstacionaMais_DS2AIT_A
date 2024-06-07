@@ -9,6 +9,8 @@
  * Versão: 1.0 
  ********************************************************/
 
+const tratamentoRepo = require('./tratamentos.js')
+
 const reservasDao = require('../model/DAO/reservas.js')
 const message = require('../modulo/config.js')
 
@@ -23,6 +25,32 @@ const getListarReservas = async function () {
 
     try {
         const dadosReservas = await reservasDao.selectAllReservas()
+
+        const id = dadosReservas[0].id
+        const dataEntrada = tratamentoRepo.tratarDataSimples(dadosReservas[0].dataEntrada)
+        const dataSaida = tratamentoRepo.tratarDataSimples(dadosReservas[0].dataSaida)
+        const horarioEntrada = dadosReservas[0].horarioEntrada
+        const horarioSaida = dadosReservas[0].horarioSaida
+
+        let jsonDadosReservas = {}
+
+        const keys = Object.keys(dadosReservas)
+
+        keys.forEach((key, index) => {
+            jsonDadosReservas = `"${key}" = "${dadosReservas[key]}"`
+            console.log(dadosReservas[key]);
+            if(index !== keys.length - 1) {
+                jsonDadosReservas += `,`
+            }
+        })
+
+        // jsonDadosReservas.id = id
+        // jsonDadosReservas.dataEntrada = dataEntrada
+        // jsonDadosReservas.dataSaida = dataSaida
+        // jsonDadosReservas.horarioEntrada = horarioEntrada
+        // jsonDadosReservas.horarioSaida = horarioSaida
+
+        console.table(jsonDadosReservas);
 
         if (dadosReservas) {
             if (dadosReservas.length > 0) {

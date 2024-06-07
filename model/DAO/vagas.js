@@ -28,7 +28,7 @@ const selectAllVagas = async function () {
     }
 }
 
-const selectByIdVaga = async function () {
+const selectByIdVaga = async function (id) {
     try {
         
         let sql = `select * from tbl_vagas where id = ${id}`
@@ -64,7 +64,7 @@ const updateVaga = async function (id, dadosVagas) {
             }
         })
 
-        sql += `WHERE id = ${id}`
+        sql += ` WHERE id = ${id}`
 
         const rsVagas = await prisma.$executeRawUnsafe(sql)
         return rsVagas
@@ -95,7 +95,7 @@ const insertVaga = async function (dadosVagas) {
     }
 }
 
-const deleteVaga = async function () {
+const deleteVaga = async function (id) {
     try {
         
         let sql = `delete from tbl_vagas where id = ${id}`

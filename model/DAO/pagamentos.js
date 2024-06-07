@@ -28,7 +28,7 @@ const selectAllPagamentos = async function () {
     }
 }
 
-const selectByIdPagamento = async function () {
+const selectByIdPagamento = async function (id) {
     try {
 
         let sql = `select * from tbl_pagamentos where id = ${id}`
@@ -56,7 +56,7 @@ const selectLastIdPagamento = async function () {
 const updatePagamento = async function (id, dadosPagamentos) {
     try {
         
-        let sql = `UPDATE tbl_pagamentos SET`
+        let sql = `UPDATE tbl_pagamentos SET `
         const keys = Object.keys(dadosPagamentos)
 
         keys.forEach((key, index) => {
@@ -66,7 +66,7 @@ const updatePagamento = async function (id, dadosPagamentos) {
             }
         })
 
-        sql += `WHERE id = ${id}`
+        sql += ` WHERE id = ${id}`
 
         const rsPagamentos = await prisma.$executeRawUnsafe(sql)
 
@@ -97,7 +97,7 @@ const insertPagamento = async function (dadosPagamentos) {
     }
 }
 
-const deletePagamento = async function () {
+const deletePagamento = async function (id) {
     try {
         let sql = `delete from tbl_pagamentos where id = ${id}`
 
