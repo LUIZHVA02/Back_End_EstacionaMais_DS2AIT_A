@@ -40,20 +40,19 @@ const tratarHora = function (tempo) {
 
     // Verificar se o número de horas é maior que 1
     if (parseInt(horas) > 1) {
-        const HoraFormatada = `${horas} horas e ${minutos} minutos`
-        return HoraFormatada
+        const horaFormatada = `${horas} horas e ${minutos} minutos`
+        return horaFormatada
     } else {
-        const HoraFormatada = `${horas} hora e ${minutos} minutos`
-        return HoraFormatada
+        const horaFormatada = `${horas} hora e ${minutos} minutos`
+        return horaFormatada
     }
 }
 
  const tratarHoraSimples = function (tempo) {
-    // Remover tudo 'T' e depois do último caractere 'Z'
-    const tempoSemData = tempo.split('T')[1].split('.')[0]
+    const tempoSemData = `${tempo.getHours()}:${tempo.getMinutes()}`
 
-    const HoraFormatada = `${tempoSemData}`
-    return HoraFormatada
+    const horaFormatada = `${tempoSemData}`
+    return horaFormatada
 }
 
 const tratarValorUnitario = function (valorUnitario) {

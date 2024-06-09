@@ -75,7 +75,7 @@ const updateVaga = async function (id, dadosVagas) {
 
 const insertVaga = async function (dadosVagas) {
     try {
-        let sql = `insert into tbl_pagamentos(
+        let sql = `insert into tbl_vagas(
                                                 sigla_vaga,
                                                 tipo_vaga,
                                                 status_vaga

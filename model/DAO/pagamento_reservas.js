@@ -27,7 +27,7 @@ const selectAllPagamento_reservas = async function () {
     }
 }
 
-const selectByIdPagamento_reserva = async function () {
+const selectByIdPagamento_reserva = async function (id) {
     try {
         let sql = `select * from tbl_pagamento_reserva where id = ${id}`
 
@@ -35,6 +35,7 @@ const selectByIdPagamento_reserva = async function () {
 
         return rsPagamento_reserva
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -54,7 +55,7 @@ const selectLastIdPagamento_reserva = async function () {
 
 const updatePagamento_reserva = async function (id, dadosPagamentoReserva) {
     try {
-        let sql = `UPDATE tbl_pagamento_reserva SET`
+        let sql = `UPDATE tbl_pagamento_reserva SET `
         const keys = Object.keys(dadosPagamentoReserva)
 
         keys.forEach((key, index) => {
@@ -64,39 +65,40 @@ const updatePagamento_reserva = async function (id, dadosPagamentoReserva) {
             }
         })
 
-        sql += `WHERE id = ${id}`
+        sql += ` WHERE id = ${id}`
 
         const rsPagamento_reserva = await prisma.$executeRawUnsafe(sql)
         return rsPagamento_reserva
     } catch (error) {
+        console.log(error);
         return false
     }
 }
 
 const insertPagamento_reserva = async function (dadosPagamentoReserva) {
     try {
-        let sql = `insert into tbl_pagamento reserva (
+        let sql = `insert into tbl_pagamento_reserva (
                                                         id_pagamento,
                                                         id_reserva,
                                                         id_usuario
                                                      ) 
                                                         values
                                                      (
-                                                        '${dadosPagamentoReserva.pagamento}',
-                                                        '${dadosPagamentoReserva.reserva}',
-                                                        '${dadosPagamentoReserva.usuario}'
+                                                        ${dadosPagamentoReserva.id_pagamento},
+                                                        ${dadosPagamentoReserva.id_reserva},
+                                                        ${dadosPagamentoReserva.id_usuario}
                                                      )`
-
         const rsPagamento_reserva = await prisma.$executeRawUnsafe(sql)
 
         console.log(rsPagamento_reserva)
         return rsPagamento_reserva
     } catch (error) {
+        console.log(error);
         return false
     }
 }
 
-const deletePagamento_reserva = async function () {
+const deletePagamento_reserva = async function (id) {
     try {
 
         let sql = `delete from tbl_pagamento_reserva where id = ${id}`
@@ -104,6 +106,7 @@ const deletePagamento_reserva = async function () {
         const rsPagamento_reserva = await prisma.$executeRawUnsafe(sql)
         return rsPagamento_reserva
     } catch (error) {
+        console.log(error);
         return false
     }
 }

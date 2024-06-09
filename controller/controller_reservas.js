@@ -26,35 +26,35 @@ const getListarReservas = async function () {
     try {
         const dadosReservas = await reservasDao.selectAllReservas()
 
-        const id = dadosReservas[0].id
         const dataEntrada = tratamentoRepo.tratarDataSimples(dadosReservas[0].dataEntrada)
         const dataSaida = tratamentoRepo.tratarDataSimples(dadosReservas[0].dataSaida)
-        const horarioEntrada = dadosReservas[0].horarioEntrada
-        const horarioSaida = dadosReservas[0].horarioSaida
+        const horarioEntrada = tratamentoRepo.tratarHoraSimples(dadosReservas[0].horarioEntrada)
+        const horarioSaida = tratamentoRepo.tratarHoraSimples(dadosReservas[0].horarioSaida)
+
 
         let jsonDadosReservas = {}
+        let arrayDadosReservasTratados = []
 
         const keys = Object.keys(dadosReservas)
 
-        keys.forEach((key, index) => {
-            jsonDadosReservas = `"${key}" = "${dadosReservas[key]}"`
-            console.log(dadosReservas[key]);
-            if(index !== keys.length - 1) {
-                jsonDadosReservas += `,`
+        keys.forEach((index) => {
+
+            const id = dadosReservas[index].id
+
+            jsonDadosReservas = {
+                id,
+                dataEntrada,
+                dataSaida,
+                horarioEntrada,
+                horarioSaida
             }
+
+            arrayDadosReservasTratados.push(jsonDadosReservas)
         })
-
-        // jsonDadosReservas.id = id
-        // jsonDadosReservas.dataEntrada = dataEntrada
-        // jsonDadosReservas.dataSaida = dataSaida
-        // jsonDadosReservas.horarioEntrada = horarioEntrada
-        // jsonDadosReservas.horarioSaida = horarioSaida
-
-        console.table(jsonDadosReservas);
 
         if (dadosReservas) {
             if (dadosReservas.length > 0) {
-                jsonReservas.reservas = dadosReservas
+                jsonReservas.reservas = arrayDadosReservasTratados
                 jsonReservas.quantidade = dadosReservas.length
                 jsonReservas.status_code = 200
 
@@ -80,11 +80,26 @@ const getBuscarReservasById = async function (id) {
         } else {
             const dadosReservas = await reservasDao.selectByIdReservas(id)
 
+            const dataEntrada = tratamentoRepo.tratarDataSimples(dadosReservas[0].dataEntrada)
+            const dataSaida = tratamentoRepo.tratarDataSimples(dadosReservas[0].dataSaida)
+            const horarioEntrada = tratamentoRepo.tratarHoraSimples(dadosReservas[0].horarioEntrada)
+            const horarioSaida = tratamentoRepo.tratarHoraSimples(dadosReservas[0].horarioSaida)
+
+            let jsonDadosReservas = {
+                id,
+                dataEntrada,
+                dataSaida,
+                horarioEntrada,
+                horarioSaida
+            }
+
             if (dadosReservas) {
                 if (dadosReservas.length > 0) {
-                    jsonReservas.reservas = dadosReservas
+                    jsonReservas.reservas = jsonDadosReservas
                     jsonReservas.status_code = 200
 
+
+                    console.log(jsonDadosReservas);
                     return jsonReservas
                 } else {
                     return message.ERROR_NOT_FOUND
@@ -182,7 +197,7 @@ const setAtualizarReservas = async function (id, dadosReservasUpdate, content) {
 
             if (validaId) {
 
-                let id = validaId.reservas[0].id
+                let id = validaId.reservas.id
                 let dataEntrada = dadosReservasUpdate.dataEntrada
                 let dataSaida = dadosReservasUpdate.dataSaida
                 let horarioSaida = dadosReservasUpdate.horarioSaida
@@ -262,7 +277,7 @@ const setDeletarReservasById = async function (id) {
             const validaId = await getBuscarReservasById(id)
 
             if (validaId) {
-                const id = validaId.reservas[0].id
+                const id = validaId.reservas.id
 
                 const apagarReservas = await reservasDao.deleteReservas(id)
 
@@ -270,7 +285,7 @@ const setDeletarReservasById = async function (id) {
                     jsonDeleteReservas.status = message.SUCCES_DELETED_ITEM.status
                     jsonDeleteReservas.status_code = message.SUCCES_DELETED_ITEM.status_code
                     jsonDeleteReservas.message = message.SUCCES_DELETED_ITEM.message
-                    jsonDeleteReservas.id = validaId.reservas[0].id
+                    jsonDeleteReservas.id = id
 
                     return jsonDeleteReservas
                 } else {

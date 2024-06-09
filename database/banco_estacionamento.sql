@@ -252,6 +252,9 @@ create table tbl_usuario_veiculos(
     foreign key (id_veiculo) references tbl_veiculos (id)
 );
 
+insert into tbl_usuario_veiculos(id_usuario,id_veiculo)values
+(1,1);
+
 create table tbl_reserva_vagas_administrador(
     id int auto_increment primary key,
     id_vaga int,
@@ -263,6 +266,9 @@ create table tbl_reserva_vagas_administrador(
     foreign key (id_veiculo) references tbl_veiculos (id),
     foreign key (id_administrador) references tbl_administradores (id)
 );
+
+insert into tbl_reserva_vagas_administrador(id_vaga, id_reserva, id_veiculo, id_administrador)values
+(1,1,1,1);
 
 create table tbl_reserva_vagas_usuario(
     id int auto_increment primary key,
@@ -276,6 +282,9 @@ create table tbl_reserva_vagas_usuario(
     foreign key (id_usuario) references tbl_usuarios(id)
 );
 
+insert into tbl_reserva_vagas_usuario(id_vaga, id_reserva, id_veiculo, id_usuario)values
+(1,1,1,1);
+
 create table tbl_pagamento_reserva(
     id int auto_increment primary key,
     id_pagamento int,
@@ -285,3 +294,6 @@ create table tbl_pagamento_reserva(
     foreign key (id_usuario) references tbl_usuarios(id),
     foreign key (id_reserva) references tbl_reservas (id)
 );
+
+insert into tbl_pagamento_reserva(id_pagamento, id_reserva, id_usuario)values
+(1,1,1);

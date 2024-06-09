@@ -110,6 +110,7 @@ const setInserirPagamento_reservas = async function (contentType, dadosPagamento
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
+                console.log(dadosPagamento_reserva);
                 let novoPagamento_reserva = await pagamento_reservasDao.insertPagamento_reserva(dadosPagamento_reserva)
 
                 if (novoPagamento_reserva) {
@@ -125,11 +126,9 @@ const setInserirPagamento_reservas = async function (contentType, dadosPagamento
                         console.log(novoPagamento_reserva);
                         return novoPagamento_reservaJson
                     } else {
-                        console.log("Novo ID:" + idNovoPagamento_reserva);
                         return message.ERROR_INTERNAL_SERVER_DB
                     }
                 } else {
-                    console.log("Novo Pagamento_reserva:" + dadosPagamento_reserva);
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
             }

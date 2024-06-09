@@ -325,7 +325,7 @@ app.get('/v1/estacionaMais/reserva/:id', cors(), async function (request, respon
 })
 app.post('/v1/estacionaMais/inserirReserva', cors(), bodyParserJson, async function (request, response, next) {
     let contentType = request.headers['content-type']
-    dadosBody = request.body
+    let dadosBody = request.body
 
     let resultDados = await controllerReservas.setInserirReservas(contentType, dadosBody)
 
@@ -368,7 +368,7 @@ app.get('/v1/estacionaMais/usuarioVeiculo/:id', cors(), bodyParserJson, async fu
 })
 app.post('/v1/estacionaMais/inserirUsuarioVeiculo', cors(), bodyParserJson, async function (request, response, next) {
     let contentType = request.headers['content-type']
-    dadosBody = request.body
+    let dadosBody = request.body
 
     let resultDados = await controllerUsuario_veiculos.setInserirUsuario_veiculos(contentType, dadosBody)
 
@@ -456,7 +456,7 @@ app.get('/v1/estacionaMais/vaga/:id', cors(), async function (request, response,
 app.post('/v1/estacionaMais/inserirVaga', cors(), bodyParserJson, async function (request, response, next) {
 
     let contentType = request.headers['content-type']
-    dadosBody = request.body
+    let dadosBody = request.body
 
     let resultDados = await controllerVagas.setInserirVagas(contentType, dadosBody)
 
@@ -500,7 +500,7 @@ app.get('/v1/estacionaMais/veiculo/:id', cors(), async function (request, respon
 })
 app.post('/v1/estacionaMais/inserirVeiculo', cors(), bodyParserJson, async function (request, response, next) {
     let contentType = request.headers['content-type']
-    dadosBody = request.body
+    let dadosBody = request.body
 
     let resultDados = await controllerVeiculos.setInserirVeiculos(contentType, dadosBody)
 
