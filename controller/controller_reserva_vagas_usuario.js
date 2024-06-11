@@ -10,6 +10,10 @@
  ********************************************************/
 
 const reserva_vagas_usuariosDao = require('../model/DAO/reserva_vagas_usuario.js')
+const reservasDao = require('../model/DAO/reservas.js')
+const usuariosDao = require('../model/DAO/usuarios.js')
+const vagasDao = require('../model/DAO/vagas.js')
+const veiculosDao = require('../model/DAO/veiculos.js')
 const message = require('../modulo/config.js')
 
 const antigoDigito = `'`
@@ -38,7 +42,7 @@ const getListarReserva_vagas_usuario = async function () {
             return message.ERROR_INTERNAL_SERVER_DB
         }
     } catch (error) {
-        console.log(error);
+        console.log(error+"aqui");
         return message.ERROR_INTERNAL_SERVER
     }
 }
@@ -112,6 +116,20 @@ const setInserirReserva_vagas_usuarios = async function (contentType, dadosReser
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
+                let id_vaga_validate = await vagasDao.selectByIdVaga(dadosReserva_vagas_usuario.id_vaga)
+                let id_reserva_validate = await reservasDao.selectByIdReservas(dadosReserva_vagas_usuario.id_reserva)
+                let id_veiculo_validate = await veiculosDao.selectByIdVeiculo(dadosReserva_vagas_usuario.id_veiculo)
+                let id_usuario_validate = await usuariosDao.selectByIdUsuario(dadosReserva_vagas_usuario.id_usuario)
+
+                if (
+                    id_vaga_validate != false && id_reserva_validate != false &&
+                    id_veiculo_validate != false && id_usuario_validate != false
+                ) {
+
+                } else {
+                    return message.ERROR_INVALID_ID
+                }
+
                 let novoReserva_vagas_usuario = await reserva_vagas_usuariosDao.insertReserva_vaga_usuario(dadosReserva_vagas_usuario)
 
                 if (novoReserva_vagas_usuario) {
@@ -153,77 +171,88 @@ const setAtualizarReserva_vagas_usuario = async function (id, dadosReserva_vagas
             const validaId = await getBuscarReserva_vagas_usuarioById(id)
 
             if (validaId) {
-
-                let id = validaId.reserva_vagas_usuario[0].id
-                let id_vaga = dadosReserva_vagas_usuarioUpdate.id_vaga
-                let id_veiculo = dadosReserva_vagas_usuarioUpdate.id_veiculo
-                let id_usuario = dadosReserva_vagas_usuarioUpdate.id_usuario
-
-                if (
-                    id_vaga != '' &&
-                    id_vaga != undefined &&
-                    id_vaga != null &&
-                    id_vaga.length < 100
-                ) {
-                    updateReserva_vagas_usuarioJson.id_vaga = id_vaga
-                } else if (
-                    id_vaga == '' &&
-                    id_vaga == undefined &&
-                    id_vaga == null
-                ) { }
+                let id_vaga_validate = await vagasDao.selectByIdVaga(dadosReserva_vagas_usuarioUpdate.id_vaga)
+                let id_reserva_validate = await reservasDao.selectByIdReservas(dadosReserva_vagas_usuarioUpdate.id_reserva)
+                let id_veiculo_validate = await veiculosDao.selectByIdVeiculo(dadosReserva_vagas_usuarioUpdate.id_veiculo)
+                let id_usuario_validate = await usuariosDao.selectByIdUsuario(dadosReserva_vagas_usuarioUpdate.id_usuario)
 
                 if (
-                    id_reserva != '' &&
-                    id_reserva != undefined &&
-                    id_reserva != null &&
-                    id_reserva.length < 100
+                    id_vaga_validate != false && id_reserva_validate != false &&
+                    id_veiculo_validate != false && id_usuario_validate != false
                 ) {
-                    updateReserva_vagas_usuarioJson.id_reserva = id_reserva
-                } else if (
-                    id_reserva == '' &&
-                    id_reserva == undefined &&
-                    id_reserva == null
-                ) { }
+                    let id = validaId.reserva_vagas_usuario[0].id
+                    let id_vaga = dadosReserva_vagas_usuarioUpdate.id_vaga
+                    let id_reserva = dadosReserva_vagas_usuarioUpdate.id_reserva
+                    let id_veiculo = dadosReserva_vagas_usuarioUpdate.id_veiculo
+                    let id_usuario = dadosReserva_vagas_usuarioUpdate.id_usuario
 
-                if (
-                    id_veiculo != '' &&
-                    id_veiculo != undefined &&
-                    id_veiculo != null &&
-                    id_veiculo.length < 100
-                ) {
-                    updateReserva_vagas_usuarioJson.id_veiculo = id_veiculo
-                } else if (
-                    id_veiculo == '' &&
-                    id_veiculo == undefined &&
-                    id_veiculo == null
-                ) { }
+                    if (
+                        id_vaga != '' &&
+                        id_vaga != undefined &&
+                        id_vaga != null
+                    ) {
+                        updateReserva_vagas_usuarioJson.id_vaga = id_vaga
+                    } else if (
+                        id_vaga == '' &&
+                        id_vaga == undefined &&
+                        id_vaga == null
+                    ) { }
 
-                if (
-                    id_usuario != '' &&
-                    id_usuario != undefined &&
-                    id_usuario != null &&
-                    id_usuario.length == 20
-                ) {
-                    updateReserva_vagas_usuarioJson.id_usuario = id_usuario
-                } else if (
-                    id_usuario == '' &&
-                    id_usuario == undefined &&
-                    id_usuario == null
-                ) { }
+                    if (
+                        id_reserva != '' &&
+                        id_reserva != undefined &&
+                        id_reserva != null
+                    ) {
+                        updateReserva_vagas_usuarioJson.id_reserva = id_reserva
+                    } else if (
+                        id_reserva == '' &&
+                        id_reserva == undefined &&
+                        id_reserva == null
+                    ) { }
 
-                const reserva_vagas_usuarioAtualizado = await reserva_vagas_usuariosDao.updateReserva_vaga_usuario(id, updateReserva_vagas_usuarioJson)
+                    if (
+                        id_veiculo != '' &&
+                        id_veiculo != undefined &&
+                        id_veiculo != null
+                    ) {
+                        updateReserva_vagas_usuarioJson.id_veiculo = id_veiculo
+                    } else if (
+                        id_veiculo == '' &&
+                        id_veiculo == undefined &&
+                        id_veiculo == null
+                    ) { }
 
-                if (reserva_vagas_usuarioAtualizado) {
-                    resultUpdateReserva_vagas_usuarioJson.id = id
-                    resultUpdateReserva_vagas_usuarioJson.status = message.SUCCES_UPDATED_ITEM.status
-                    resultUpdateReserva_vagas_usuarioJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
-                    resultUpdateReserva_vagas_usuarioJson.message = message.SUCCES_UPDATED_ITEM.message
-                    resultUpdateReserva_vagas_usuarioJson.reserva_vagas_usuario = dadosReserva_vagas_usuarioUpdate
+                    if (
+                        id_usuario != '' &&
+                        id_usuario != undefined &&
+                        id_usuario != null
+                    ) {
+                        updateReserva_vagas_usuarioJson.id_usuario = id_usuario
+                    } else if (
+                        id_usuario == '' &&
+                        id_usuario == undefined &&
+                        id_usuario == null
+                    ) { }
+                    
+                    const reserva_vagas_usuarioAtualizado = await reserva_vagas_usuariosDao.updateReserva_vaga_usuario(id, updateReserva_vagas_usuarioJson)
+                    
+                    
 
-                    return resultUpdateReserva_vagas_usuarioJson
+                    if (reserva_vagas_usuarioAtualizado) {
+                        resultUpdateReserva_vagas_usuarioJson.id = id
+                        resultUpdateReserva_vagas_usuarioJson.status = message.SUCCES_UPDATED_ITEM.status
+                        resultUpdateReserva_vagas_usuarioJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
+                        resultUpdateReserva_vagas_usuarioJson.message = message.SUCCES_UPDATED_ITEM.message
+                        resultUpdateReserva_vagas_usuarioJson.reserva_vagas_usuario = dadosReserva_vagas_usuarioUpdate
+
+                        return resultUpdateReserva_vagas_usuarioJson
+                    } else {
+                        return message.ERROR_INTERNAL_SERVER_DB
+                    }
                 } else {
-                    return message.ERROR_INTERNAL_SERVER_DB
+                    return message.ERROR_INVALID_ID
                 }
+
             } else {
                 return message.ERROR_NOT_FOUND
             }

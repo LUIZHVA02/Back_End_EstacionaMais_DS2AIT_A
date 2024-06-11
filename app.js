@@ -212,7 +212,7 @@ app.delete('/v1/estacionaMais/deletePagamento/:id', cors(), async function (requ
 })
 
 // Reserva Admin
-app.get('/v1/estacionaMais/reservaVagasAdministrador', cors(), async function (request, response, next) {
+app.get('/v1/estacionaMais/reservaVagasAdministradores', cors(), async function (request, response, next) {
     let dadosAdministradoresVagas = await controllerReserva_vagas_administrador.getListarReserva_vagas_Administrador()
 
     response.status(dadosAdministradoresVagas.status_code)
@@ -262,11 +262,11 @@ app.delete('/v1/estacionaMais/deleteReservaVagasAdministrador/:id', cors(), asyn
 })
 
 // Reserva Usuario
-app.get('/v1/estacionaMais/reservaVagasUsuario', cors(), async function (request, response, next) {
+app.get('/v1/estacionaMais/reservaVagasUsuarios', cors(), async function (request, response, next) {
 
     let dadosUsuarioVagas = await controllerReserva_vagas_usuario.getListarReserva_vagas_usuario()
 
-    response.status(dadosUsuarioVagas)
+    response.status(dadosUsuarioVagas.status_code)
     response.json(dadosUsuarioVagas)
 
 })
@@ -275,7 +275,7 @@ app.get('/v1/estacionaMais/reservaVagasUsuario/:id', cors(), async function (req
     let idVagasUsuarios = request.params.id
     let dadosReservaUsuario = await controllerReserva_vagas_usuario.getBuscarReserva_vagas_usuarioById(idVagasUsuarios)
 
-    response.status(dadosReservaUsuario)
+    response.status(dadosReservaUsuario.status_code)
     response.json(dadosReservaUsuario)
 
 })

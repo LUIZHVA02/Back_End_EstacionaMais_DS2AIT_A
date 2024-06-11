@@ -10,6 +10,10 @@
  ********************************************************/
 
 const reserva_vagas_AdministradoresDao = require('../model/DAO/reserva_vagas_administrador.js')
+const administradorDao = require('../model/DAO/administradores.js')
+const reservasDao = require('../model/DAO/reservas.js')
+const vagasDao = require('../model/DAO/vagas.js')
+const veiculosDao = require('../model/DAO/veiculos.js')
 const message = require('../modulo/config.js')
 
 const antigoDigito = `'`
@@ -112,27 +116,39 @@ const setInserirReserva_vagas_Administradors = async function (contentType, dado
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
-                let novoReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.insertReserva_vaga_administrador(dadosReserva_vagas_Administrador)
+                let id_vaga_validate = await vagasDao.selectByIdVaga(dadosReserva_vagas_Administrador.id_vaga)
+                let id_reserva_validate = await reservasDao.selectByIdReservas(dadosReserva_vagas_Administrador.id_reserva)
+                let id_veiculo_validate = await veiculosDao.selectByIdVeiculo(dadosReserva_vagas_Administrador.id_veiculo)
+                let id_administrador_validate = await administradorDao.selectByIdAdministrador(dadosReserva_vagas_Administrador.id_administrador)
 
-                if (novoReserva_vagas_Administrador) {
-                    let idNovoReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.selectLastIdReserva_vaga_administrador()
+                if (
+                    id_vaga_validate != false && id_reserva_validate != false &&
+                    id_veiculo_validate != false && id_administrador_validate != false
+                ) {
+                    let novoReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.insertReserva_vaga_administrador(dadosReserva_vagas_Administrador)
 
-                    if (idNovoReserva_vagas_Administrador) {
-                        novoReserva_vagas_AdministradorJson.status = message.SUCCES_CREATED_ITEM.status
-                        novoReserva_vagas_AdministradorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
-                        novoReserva_vagas_AdministradorJson.message = message.SUCCES_CREATED_ITEM.message
-                        novoReserva_vagas_AdministradorJson.id = idNovoReserva_vagas_Administrador[0].id
-                        novoReserva_vagas_AdministradorJson.novoReserva_vagas_Administrador = dadosReserva_vagas_Administrador
+                    if (novoReserva_vagas_Administrador) {
+                        let idNovoReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.selectLastIdReserva_vaga_administrador()
 
-                        console.log(novoReserva_vagas_Administrador);
-                        return novoReserva_vagas_AdministradorJson
+                        if (idNovoReserva_vagas_Administrador) {
+                            novoReserva_vagas_AdministradorJson.status = message.SUCCES_CREATED_ITEM.status
+                            novoReserva_vagas_AdministradorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
+                            novoReserva_vagas_AdministradorJson.message = message.SUCCES_CREATED_ITEM.message
+                            novoReserva_vagas_AdministradorJson.id = idNovoReserva_vagas_Administrador[0].id
+                            novoReserva_vagas_AdministradorJson.novoReserva_vagas_Administrador = dadosReserva_vagas_Administrador
+
+                            console.log(novoReserva_vagas_Administrador);
+                            return novoReserva_vagas_AdministradorJson
+                        } else {
+                            console.log("Novo ID:" + idNovoReserva_vagas_Administrador);
+                            return message.ERROR_INTERNAL_SERVER_DB
+                        }
                     } else {
-                        console.log("Novo ID:" + idNovoReserva_vagas_Administrador);
+                        console.log("Novo Reserva_vagas_Administrador:" + dadosReserva_vagas_Administrador);
                         return message.ERROR_INTERNAL_SERVER_DB
                     }
                 } else {
-                    console.log("Novo Reserva_vagas_Administrador:" + dadosReserva_vagas_Administrador);
-                    return message.ERROR_INTERNAL_SERVER_DB
+                    return message.ERROR_INVALID_ID
                 }
             }
         } else {
@@ -153,76 +169,87 @@ const setAtualizarReserva_vagas_Administrador = async function (id, dadosReserva
             const validaId = await getBuscarReserva_vagas_AdministradorById(id)
 
             if (validaId) {
-
-                let id = validaId.reserva_vagas_Administrador[0].id
-                let id_vaga = dadosReserva_vagas_AdministradorUpdate.id_vaga
-                let id_veiculo = dadosReserva_vagas_AdministradorUpdate.id_veiculo
-                let id_administrador = dadosReserva_vagas_AdministradorUpdate.id_administrador
-
-                if (
-                    id_vaga != '' &&
-                    id_vaga != undefined &&
-                    id_vaga != null &&
-                    id_vaga.length < 100
-                ) {
-                    updateReserva_vagas_AdministradorJson.id_vaga = id_vaga
-                } else if (
-                    id_vaga == '' &&
-                    id_vaga == undefined &&
-                    id_vaga == null
-                ) { }
+                let id_vaga_validate = await vagasDao.selectByIdVaga(dadosReserva_vagas_AdministradorUpdate.id_vaga)
+                let id_reserva_validate = await reservasDao.selectByIdReservas(dadosReserva_vagas_AdministradorUpdate.id_reserva)
+                let id_veiculo_validate = await veiculosDao.selectByIdVeiculo(dadosReserva_vagas_AdministradorUpdate.id_veiculo)
+                let id_administrador_validate = await administradorDao.selectByIdAdministrador(dadosReserva_vagas_AdministradorUpdate.id_administrador)
 
                 if (
-                    id_reserva != '' &&
-                    id_reserva != undefined &&
-                    id_reserva != null &&
-                    id_reserva.length < 100
+                    id_vaga_validate != false && id_reserva_validate != false &&
+                    id_veiculo_validate != false && id_administrador_validate != false
                 ) {
-                    updateReserva_vagas_AdministradorJson.id_reserva = id_reserva
-                } else if (
-                    id_reserva == '' &&
-                    id_reserva == undefined &&
-                    id_reserva == null
-                ) { }
+                    let id = validaId.reserva_vagas_Administrador[0].id
+                    let id_vaga = dadosReserva_vagas_AdministradorUpdate.id_vaga
+                    let id_reserva = dadosReserva_vagas_AdministradorUpdate.id_reserva
+                    let id_veiculo = dadosReserva_vagas_AdministradorUpdate.id_veiculo
+                    let id_administrador = dadosReserva_vagas_AdministradorUpdate.id_administrador
 
-                if (
-                    id_veiculo != '' &&
-                    id_veiculo != undefined &&
-                    id_veiculo != null &&
-                    id_veiculo.length < 100
-                ) {
-                    updateReserva_vagas_AdministradorJson.id_veiculo = id_veiculo
-                } else if (
-                    id_veiculo == '' &&
-                    id_veiculo == undefined &&
-                    id_veiculo == null
-                ) { }
+                    console.log(dadosReserva_vagas_AdministradorUpdate);
 
-                if (
-                    id_administrador != '' &&
-                    id_administrador != undefined &&
-                    id_administrador != null &&
-                    id_administrador.length == 20
-                ) {
-                    updateReserva_vagas_AdministradorJson.id_administrador = id_administrador
-                } else if (
-                    id_administrador == '' &&
-                    id_administrador == undefined &&
-                    id_administrador == null
-                ) { }
 
-                const reserva_vagas_AdministradorAtualizado = await reserva_vagas_AdministradoresDao.updateReserva_vaga_administrador(id, updateReserva_vagas_AdministradorJson)
+                    if (
+                        id_vaga != '' &&
+                        id_vaga != undefined &&
+                        id_vaga != null
+                    ) {
+                        updateReserva_vagas_AdministradorJson.id_vaga = id_vaga
+                    } else if (
+                        id_vaga == '' &&
+                        id_vaga == undefined &&
+                        id_vaga == null
+                    ) { }
 
-                if (reserva_vagas_AdministradorAtualizado) {
-                    resultUpdateReserva_vagas_AdministradorJson.id = id
-                    resultUpdateReserva_vagas_AdministradorJson.status = message.SUCCES_UPDATED_ITEM.status
-                    resultUpdateReserva_vagas_AdministradorJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
-                    resultUpdateReserva_vagas_AdministradorJson.message = message.SUCCES_UPDATED_ITEM.message
-                    resultUpdateReserva_vagas_AdministradorJson.reserva_vagas_Administrador = dadosReserva_vagas_AdministradorUpdate
+                    if (
+                        id_reserva != '' &&
+                        id_reserva != undefined &&
+                        id_reserva != null 
+                    ) {
+                        updateReserva_vagas_AdministradorJson.id_reserva = id_reserva
+                    } else if (
+                        id_reserva == '' &&
+                        id_reserva == undefined &&
+                        id_reserva == null
+                    ) { }
 
-                    return resultUpdateReserva_vagas_AdministradorJson
+                    if (
+                        id_veiculo != '' &&
+                        id_veiculo != undefined &&
+                        id_veiculo != null
+                    ) {
+                        updateReserva_vagas_AdministradorJson.id_veiculo = id_veiculo
+                    } else if (
+                        id_veiculo == '' &&
+                        id_veiculo == undefined &&
+                        id_veiculo == null
+                    ) { }
+
+                    if (
+                        id_administrador != '' &&
+                        id_administrador != undefined &&
+                        id_administrador != null
+                    ) {
+                        updateReserva_vagas_AdministradorJson.id_administrador = id_administrador
+                    } else if (
+                        id_administrador == '' &&
+                        id_administrador == undefined &&
+                        id_administrador == null
+                    ) { }
+                    console.log(updateReserva_vagas_AdministradorJson);
+                    const reserva_vagas_AdministradorAtualizado = await reserva_vagas_AdministradoresDao.updateReserva_vaga_administrador(id, updateReserva_vagas_AdministradorJson)
+
+                    if (reserva_vagas_AdministradorAtualizado) {
+                        resultUpdateReserva_vagas_AdministradorJson.id = id
+                        resultUpdateReserva_vagas_AdministradorJson.status = message.SUCCES_UPDATED_ITEM.status
+                        resultUpdateReserva_vagas_AdministradorJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
+                        resultUpdateReserva_vagas_AdministradorJson.message = message.SUCCES_UPDATED_ITEM.message
+                        resultUpdateReserva_vagas_AdministradorJson.reserva_vagas_Administrador = dadosReserva_vagas_AdministradorUpdate
+
+                        return resultUpdateReserva_vagas_AdministradorJson
+                    } else {
+                        return message.ERROR_INTERNAL_SERVER_DB
+                    }
                 } else {
-                    return message.ERROR_INTERNAL_SERVER_DB
+                    return message.ERROR_INVALID_ID
                 }
             } else {
                 return message.ERROR_NOT_FOUND
@@ -259,7 +286,6 @@ const setDeletarReserva_vagas_AdministradorById = async function (id) {
 
                     return jsonDeleteReserva_vagas_Administrador
                 } else {
-                    console.log(dadosReserva_vagas_Administrador);
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
             } else {

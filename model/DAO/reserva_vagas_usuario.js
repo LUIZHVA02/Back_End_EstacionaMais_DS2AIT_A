@@ -94,7 +94,7 @@ const insertReserva_vaga_usuario = async function (dadosReserva_vaga_usuario) {
                                                     '${dadosReserva_vaga_usuario.id_vaga}',
                                                     '${dadosReserva_vaga_usuario.id_reserva}',
                                                     '${dadosReserva_vaga_usuario.id_veiculo}',
-                                                    '${dadosReserva_vaga_usuario.id_usuario}',
+                                                    '${dadosReserva_vaga_usuario.id_usuario}'
                                                 )`
         
         const rsReserva_vaga_usuario = await prisma.$executeRawUnsafe(sql)
