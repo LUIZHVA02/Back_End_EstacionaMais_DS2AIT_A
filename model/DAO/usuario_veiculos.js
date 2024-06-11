@@ -24,11 +24,12 @@ const selectAllUsuario_veiculo = async function () {
         return rsUsuario_veiculo
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
 
-const selectByIdUsuario_veiculo = async function () {
+const selectByIdUsuario_veiculo = async function (id) {
     try {
 
         let sql = `select * from tbl_usuario_veiculos where id = ${id}`
@@ -36,6 +37,7 @@ const selectByIdUsuario_veiculo = async function () {
         return rsUsuario_veiculo
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -56,7 +58,7 @@ const selectLastIdUsuario_veiculo = async function () {
 const updateUsuario_veiculo = async function (id, dadosUsuario_veiculo) {
     try {
         
-        let sql = `UPDATE tbl_usuario_veiculos SET`
+        let sql = `UPDATE tbl_usuario_veiculos SET `
         const keys = Object.keys(dadosUsuario_veiculo)
 
         keys.forEach((key, index) => {
@@ -66,13 +68,16 @@ const updateUsuario_veiculo = async function (id, dadosUsuario_veiculo) {
             }
         })
 
-        sql += `WHERE id = ${id}`
+        sql += ` WHERE id = ${id}`
+
+        console.log(sql);
 
         const rsUsuario_veiculo = await prisma.$executeRawUnsafe(sql)
 
         return rsUsuario_veiculo
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -99,7 +104,7 @@ const insertUsuario_veiculo = async function (dadosUsuario_veiculo) {
     }
 }
 
-const deleteUsuario_veiculo = async function () {
+const deleteUsuario_veiculo = async function (id) {
     try {
         let sql = `delete from tbl_usuario_veiculos where id = ${id}`
 
@@ -107,6 +112,7 @@ const deleteUsuario_veiculo = async function () {
 
         return rsUsuario_veiculo
     } catch (error) {
+        console.log(error);
         return false
     }
 }

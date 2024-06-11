@@ -24,11 +24,12 @@ const selectAllReserva_vaga_administrador = async function () {
         return rsReserva_vaga_administrador
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
 
-const selectByIdReserva_vaga_administrador = async function () {
+const selectByIdReserva_vaga_administrador = async function (id) {
     try {
 
         let sql = `select * from tbl_reserva_vagas_administrador where id = ${id}`
@@ -36,6 +37,7 @@ const selectByIdReserva_vaga_administrador = async function () {
         return rsReserva_vaga_administrador
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -56,7 +58,7 @@ const selectLastIdReserva_vaga_administrador = async function () {
 const updateReserva_vaga_administrador = async function (id, dadosReserva_vaga_administrador) {
     try {
         
-        let sql = `UPDATE tbl_reserva_vagas_administrador SET`
+        let sql = `UPDATE tbl_reserva_vagas_administrador SET `
         const keys = Object.keys(dadosReserva_vaga_administrador)
 
         keys.forEach((key, index) => {
@@ -66,13 +68,14 @@ const updateReserva_vaga_administrador = async function (id, dadosReserva_vaga_a
             }
         })
 
-        sql += `WHERE id = ${id}`
+        sql += ` WHERE id = ${id}`
 
         const rsReserva_vaga_administrador = await prisma.$executeRawUnsafe(sql)
 
         return rsReserva_vaga_administrador
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -91,7 +94,7 @@ const insertReserva_vaga_administrador = async function (dadosReserva_vaga_admin
                                                     '${dadosReserva_vaga_administrador.id_vaga}',
                                                     '${dadosReserva_vaga_administrador.id_reserva}',
                                                     '${dadosReserva_vaga_administrador.id_veiculo}',
-                                                    '${dadosReserva_vaga_administrador.id_administrador}',
+                                                    '${dadosReserva_vaga_administrador.id_administrador}'
                                                 )`
         
         const rsReserva_vaga_administrador = await prisma.$executeRawUnsafe(sql)
@@ -99,11 +102,12 @@ const insertReserva_vaga_administrador = async function (dadosReserva_vaga_admin
         console.log(rsReserva_vaga_administrador)
         return rsReserva_vaga_administrador
     } catch (error) {
+        console.log(error);
         return false
     }
 }
 
-const deleteReserva_vaga_administrador = async function () {
+const deleteReserva_vaga_administrador = async function (id) {
     try {
         let sql = `delete from tbl_reserva_vagas_administrador where id = ${id}`
 
@@ -111,6 +115,7 @@ const deleteReserva_vaga_administrador = async function () {
 
         return rsReserva_vaga_administrador
     } catch (error) {
+        console.log(error);
         return false
     }
 }

@@ -10,6 +10,8 @@
  ********************************************************/
 
 const usuario_veiculosDao = require('../model/DAO/usuario_veiculos.js')
+const usuariosDao = require('../model/DAO/usuarios.js')
+const veiculosDao = require('../model/DAO/veiculos.js')
 const message = require('../modulo/config.js')
 
 const antigoDigito = `'`
@@ -101,34 +103,42 @@ const setInserirUsuario_veiculos = async function (contentType, dadosUsuario_vei
         if (String(contentType).toLocaleLowerCase() === "application/json") {
 
             let novoUsuario_veiculoJson = {}
+
             if (dadosUsuario_veiculo.id_usuario == "" || dadosUsuario_veiculo.id_usuario == undefined ||
-                dadosUsuario_veiculo.id_usuario == null || isNaN(dadosUsuario_veiculo.id_usuario)||
+                dadosUsuario_veiculo.id_usuario == null || isNaN(dadosUsuario_veiculo.id_usuario) ||
                 dadosUsuario_veiculo.id_veiculo == "" || dadosUsuario_veiculo.id_veiculo == undefined ||
                 dadosUsuario_veiculo.id_veiculo == null || isNaN(dadosUsuario_veiculo.id_veiculo)
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
-                let novoUsuario_veiculo = await usuario_veiculosDao.insertUsuario_veiculo(dadosUsuario_veiculo)
+                let id_usuario_validate = await usuariosDao.selectByIdUsuario(dadosUsuario_veiculo.id_usuario)
+                let id_veiculo_validate = await veiculosDao.selectByIdVeiculo(dadosUsuario_veiculo.id_veiculo)
 
-                if (novoUsuario_veiculo) {
-                    let idNovoUsuario_veiculo = await usuario_veiculosDao.selectLastIdUsuario_veiculo()
+                if (id_usuario_validate != false && id_veiculo_validate != false) {
+                    let novoUsuario_veiculo = await usuario_veiculosDao.insertUsuario_veiculo(dadosUsuario_veiculo)
 
-                    if (idNovoUsuario_veiculo) {
-                        novoUsuario_veiculoJson.status = message.SUCCES_CREATED_ITEM.status
-                        novoUsuario_veiculoJson.status_code = message.SUCCES_CREATED_ITEM.status_code
-                        novoUsuario_veiculoJson.message = message.SUCCES_CREATED_ITEM.message
-                        novoUsuario_veiculoJson.id = idNovoUsuario_veiculo[0].id
-                        novoUsuario_veiculoJson.novoUsuario_veiculo = dadosUsuario_veiculo
+                    if (novoUsuario_veiculo) {
+                        let idNovoUsuario_veiculo = await usuario_veiculosDao.selectLastIdUsuario_veiculo()
 
-                        console.log(novoUsuario_veiculo);
-                        return novoUsuario_veiculoJson
+                        if (idNovoUsuario_veiculo) {
+                            novoUsuario_veiculoJson.status = message.SUCCES_CREATED_ITEM.status
+                            novoUsuario_veiculoJson.status_code = message.SUCCES_CREATED_ITEM.status_code
+                            novoUsuario_veiculoJson.message = message.SUCCES_CREATED_ITEM.message
+                            novoUsuario_veiculoJson.id = idNovoUsuario_veiculo[0].id
+                            novoUsuario_veiculoJson.novoUsuario_veiculo = dadosUsuario_veiculo
+
+                            console.log(novoUsuario_veiculo);
+                            return novoUsuario_veiculoJson
+                        } else {
+                            console.log("Novo ID:" + idNovoUsuario_veiculo);
+                            return message.ERROR_INTERNAL_SERVER_DB
+                        }
                     } else {
-                        console.log("Novo ID:" + idNovoUsuario_veiculo);
+                        console.log("Novo Usuario_veiculo:" + dadosUsuario_veiculo);
                         return message.ERROR_INTERNAL_SERVER_DB
                     }
                 } else {
-                    console.log("Novo Usuario_veiculo:" + dadosUsuario_veiculo);
-                    return message.ERROR_INTERNAL_SERVER_DB
+                    return message.ERROR_INVALID_ID
                 }
             }
         } else {
@@ -150,50 +160,58 @@ const setAtualizarUsuario_veiculo = async function (id, dadosUsuario_veiculoUpda
 
             if (validaId) {
 
-                let id = validaId.usuario_veiculo[0].id
-                let id_usuario = dadosUsuario_veiculoUpdate.id_usuario
-                let id_veiculo = dadosUsuario_veiculoUpdate.id_veiculo
+                let id_usuario_validate = await usuariosDao.selectByIdUsuario(dadosUsuario_veiculoUpdate.id_usuario)
+                let id_veiculo_validate = await veiculosDao.selectByIdVeiculo(dadosUsuario_veiculoUpdate.id_veiculo)
 
-                if (
-                    id_usuario != '' &&
-                    id_usuario != undefined &&
-                    id_usuario != null &&
-                    id_usuario.length < 100
-                ) {
-                    updateUsuario_veiculoJson.id_usuario = id_usuario
-                } else if (
-                    id_usuario == '' &&
-                    id_usuario == undefined &&
-                    id_usuario == null
-                ) { }
+                if (id_usuario_validate != false && id_veiculo_validate != false) {
+                    let id = validaId.usuario_veiculo[0].id 
+                    let id_usuario = dadosUsuario_veiculoUpdate.id_usuario
+                    let id_veiculo = dadosUsuario_veiculoUpdate.id_veiculo
 
-                if (
-                    id_veiculo != '' &&
-                    id_veiculo != undefined &&
-                    id_veiculo != null &&
-                    id_veiculo.length < 100
-                ) {
+                    if (
+                        id_usuario != '' &&
+                        id_usuario != undefined &&
+                        id_usuario != null &&
+                        id_usuario.length < 100
+                    ) {
+                        updateUsuario_veiculoJson.id_usuario = id_usuario
+                    } else if (
+                        id_usuario == '' &&
+                        id_usuario == undefined &&
+                        id_usuario == null
+                    ) { }
 
-                    updateUsuario_veiculoJson.id_veiculo = id_veiculo
-                } else if (
-                    id_veiculo == '' &&
-                    id_veiculo == undefined &&
-                    id_veiculo == null
-                ) { }
+                    if (
+                        id_veiculo != '' &&
+                        id_veiculo != undefined &&
+                        id_veiculo != null &&
+                        id_veiculo.length < 100
+                    ) {
 
-                const Usuario_veiculoAtualizado = await usuario_veiculosDao.updateUsuario_veiculo(id, updateUsuario_veiculoJson)
+                        updateUsuario_veiculoJson.id_veiculo = id_veiculo
+                    } else if (
+                        id_veiculo == '' &&
+                        id_veiculo == undefined &&
+                        id_veiculo == null
+                    ) { }
 
-                if (Usuario_veiculoAtualizado) {
-                    resultUpdateUsuario_veiculoJson.id = id
-                    resultUpdateUsuario_veiculoJson.status = message.SUCCES_UPDATED_ITEM.status
-                    resultUpdateUsuario_veiculoJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
-                    resultUpdateUsuario_veiculoJson.message = message.SUCCES_UPDATED_ITEM.message
-                    resultUpdateUsuario_veiculoJson.usuario_veiculo = dadosUsuario_veiculoUpdate
+                    const Usuario_veiculoAtualizado = await usuario_veiculosDao.updateUsuario_veiculo(id, updateUsuario_veiculoJson)
 
-                    return resultUpdateUsuario_veiculoJson
+                    if (Usuario_veiculoAtualizado) {
+                        resultUpdateUsuario_veiculoJson.id = id
+                        resultUpdateUsuario_veiculoJson.status = message.SUCCES_UPDATED_ITEM.status
+                        resultUpdateUsuario_veiculoJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
+                        resultUpdateUsuario_veiculoJson.message = message.SUCCES_UPDATED_ITEM.message
+                        resultUpdateUsuario_veiculoJson.usuario_veiculo = dadosUsuario_veiculoUpdate
+
+                        return resultUpdateUsuario_veiculoJson
+                    } else {
+                        return message.ERROR_INTERNAL_SERVER_DB
+                    }
                 } else {
-                    return message.ERROR_INTERNAL_SERVER_DB
+                    return message.ERROR_INVALID_ID
                 }
+
             } else {
                 return message.ERROR_NOT_FOUND
             }

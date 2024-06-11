@@ -361,9 +361,9 @@ app.get('/v1/estacionaMais/usuarioVeiculos', cors(), bodyParserJson, async funct
 app.get('/v1/estacionaMais/usuarioVeiculo/:id', cors(), bodyParserJson, async function (request, response, next) {
 
     let idUsuarioVeiculo = request.params.id
-    let dadosUsuarioVeiculo = await controllerUsuario_veiculos.getListarUsuario_veiculos(idUsuarioVeiculo)
+    let dadosUsuarioVeiculo = await controllerUsuario_veiculos.getBuscarUsuario_veiculoById(idUsuarioVeiculo)
 
-    response.status(dadosVeiculos.status_code)
+    response.status(dadosUsuarioVeiculo.status_code)
     response.json(dadosUsuarioVeiculo)
 })
 app.post('/v1/estacionaMais/inserirUsuarioVeiculo', cors(), bodyParserJson, async function (request, response, next) {

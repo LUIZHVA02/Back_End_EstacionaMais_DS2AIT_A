@@ -24,11 +24,12 @@ const selectAllReserva_vaga_usuario = async function () {
         return rsReserva_vaga_usuario
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
 
-const selectByIdReserva_vaga_usuario = async function () {
+const selectByIdReserva_vaga_usuario = async function (id) {
     try {
 
         let sql = `select * from tbl_reserva_vagas_usuario where id = ${id}`
@@ -36,6 +37,7 @@ const selectByIdReserva_vaga_usuario = async function () {
         return rsReserva_vaga_usuario
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -56,7 +58,7 @@ const selectLastIdReserva_vaga_usuario = async function () {
 const updateReserva_vaga_usuario = async function (id, dadosReserva_vaga_usuario) {
     try {
         
-        let sql = `UPDATE tbl_reserva_vagas_usuario SET`
+        let sql = `UPDATE tbl_reserva_vagas_usuario SET `
         const keys = Object.keys(dadosReserva_vaga_usuario)
 
         keys.forEach((key, index) => {
@@ -66,13 +68,14 @@ const updateReserva_vaga_usuario = async function (id, dadosReserva_vaga_usuario
             }
         })
 
-        sql += `WHERE id = ${id}`
+        sql += ` WHERE id = ${id}`
 
         const rsReserva_vaga_usuario = await prisma.$executeRawUnsafe(sql)
 
         return rsReserva_vaga_usuario
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -99,11 +102,12 @@ const insertReserva_vaga_usuario = async function (dadosReserva_vaga_usuario) {
         console.log(rsReserva_vaga_usuario)
         return rsReserva_vaga_usuario
     } catch (error) {
+        console.log(error);
         return false
     }
 }
 
-const deleteReserva_vaga_usuario = async function () {
+const deleteReserva_vaga_usuario = async function (id) {
     try {
         let sql = `delete from tbl_reserva_vagas_usuario where id = ${id}`
 
@@ -111,6 +115,7 @@ const deleteReserva_vaga_usuario = async function () {
 
         return rsReserva_vaga_usuario
     } catch (error) {
+        console.log(error);
         return false
     }
 }
