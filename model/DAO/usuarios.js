@@ -17,7 +17,7 @@ const prisma = new PrismaClient()
 
 const selectAllUsuarios = async function () {
     try {
-        let sql = `select * from tbl_usuarios`
+        let sql = `select id, nome, email, telefone, endereco from tbl_usuarios;`
 
         const rsUsuarios = await prisma.$queryRawUnsafe(sql)
 
