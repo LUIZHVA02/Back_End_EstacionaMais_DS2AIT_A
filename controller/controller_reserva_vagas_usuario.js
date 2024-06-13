@@ -288,11 +288,148 @@ const setDeletarReserva_vagas_usuarioById = async function (id) {
 
                     return jsonDeleteReserva_vagas_usuario
                 } else {
-                    console.log(dadosReserva_vagas_usuario);
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
             } else {
+                return message.ERROR_NOT_FOUND
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
 
+
+
+const setDeletarReserva_vagas_usuarioById_vaga = async function (id) {
+    let jsonDeleteReserva_vagas_usuario = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarReserva_vagas_usuarioById(id)
+
+            if (validaId) {
+                const id = validaId.reserva_vagas_usuario[0].id
+
+                const apagarReserva_vagas_usuario = await reserva_vagas_usuariosDao.deleteReserva_vaga_usuarioId_vaga(id)
+
+                if (apagarReserva_vagas_usuario) {
+                    jsonDeleteReserva_vagas_usuario.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeleteReserva_vagas_usuario.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeleteReserva_vagas_usuario.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeleteReserva_vagas_usuario.id = validaId.reserva_vagas_usuario[0].id
+
+                    return jsonDeleteReserva_vagas_usuario
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+                return message.ERROR_NOT_FOUND
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
+const setDeletarReserva_vagas_usuarioById_reserva = async function (id) {
+    let jsonDeleteReserva_vagas_usuario = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarReserva_vagas_usuarioById(id)
+
+            if (validaId) {
+                const id = validaId.reserva_vagas_usuario[0].id
+
+                const apagarReserva_vagas_usuario = await reserva_vagas_usuariosDao.deleteReserva_vaga_usuarioId_reserva(id)
+
+                if (apagarReserva_vagas_usuario) {
+                    jsonDeleteReserva_vagas_usuario.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeleteReserva_vagas_usuario.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeleteReserva_vagas_usuario.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeleteReserva_vagas_usuario.id = validaId.reserva_vagas_usuario[0].id
+
+                    return jsonDeleteReserva_vagas_usuario
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+                return message.ERROR_NOT_FOUND
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
+const setDeletarReserva_vagas_usuarioById_usuario = async function (id) {
+    let jsonDeleteReserva_vagas_usuario = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarReserva_vagas_usuarioById(id)
+
+            if (validaId) {
+                const id = validaId.reserva_vagas_usuario[0].id
+
+                const apagarReserva_vagas_usuario = await reserva_vagas_usuariosDao.deleteReserva_vaga_usuarioId_usuario(id)
+
+                if (apagarReserva_vagas_usuario) {
+                    jsonDeleteReserva_vagas_usuario.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeleteReserva_vagas_usuario.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeleteReserva_vagas_usuario.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeleteReserva_vagas_usuario.id = validaId.reserva_vagas_usuario[0].id
+
+                    return jsonDeleteReserva_vagas_usuario
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+                return message.ERROR_NOT_FOUND
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
+const setDeletarReserva_vagas_usuarioById_veiculo = async function (id) {
+    let jsonDeleteReserva_vagas_usuario = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarReserva_vagas_usuarioById(id)
+
+            if (validaId) {
+                const id = validaId.reserva_vagas_usuario[0].id
+
+                const apagarReserva_vagas_usuario = await reserva_vagas_usuariosDao.deleteReserva_vaga_usuarioId_veiculo(id)
+
+                if (apagarReserva_vagas_usuario) {
+                    jsonDeleteReserva_vagas_usuario.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeleteReserva_vagas_usuario.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeleteReserva_vagas_usuario.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeleteReserva_vagas_usuario.id = validaId.reserva_vagas_usuario[0].id
+
+                    return jsonDeleteReserva_vagas_usuario
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+                return message.ERROR_NOT_FOUND
             }
         }
     } catch (error) {
@@ -307,5 +444,9 @@ module.exports = {
     getBuscarUltimoReserva_vagas_usuarioInserido,
     setInserirReserva_vagas_usuarios,
     setAtualizarReserva_vagas_usuario,
-    setDeletarReserva_vagas_usuarioById
+    setDeletarReserva_vagas_usuarioById,
+    setDeletarReserva_vagas_usuarioById_vaga,
+    setDeletarReserva_vagas_usuarioById_reserva,
+    setDeletarReserva_vagas_usuarioById_usuario,
+    setDeletarReserva_vagas_usuarioById_veiculo
 }

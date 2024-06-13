@@ -117,11 +117,39 @@ const deleteUsuario_veiculo = async function (id) {
     }
 }
 
+const deleteUsuario_veiculoId_usuario = async function (id) {
+    try {
+        let sql = `delete from tbl_usuario_veiculos where id_usuario = ${id}`
+
+        const rsUsuario_veiculo = await prisma.$executeRawUnsafe(sql)
+
+        return rsUsuario_veiculo
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
+const deleteUsuario_veiculoId_veiculo = async function (id) {
+    try {
+        let sql = `delete from tbl_usuario_veiculos where id_veiculo = ${id}`
+
+        const rsUsuario_veiculo = await prisma.$executeRawUnsafe(sql)
+
+        return rsUsuario_veiculo
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
 module.exports = {
     selectAllUsuario_veiculo,
     selectByIdUsuario_veiculo,
     selectLastIdUsuario_veiculo,
     updateUsuario_veiculo,
     insertUsuario_veiculo,
-    deleteUsuario_veiculo
+    deleteUsuario_veiculo,
+    deleteUsuario_veiculoId_usuario,
+    deleteUsuario_veiculoId_veiculo
 }

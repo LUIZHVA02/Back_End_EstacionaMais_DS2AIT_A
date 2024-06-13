@@ -251,7 +251,77 @@ const setDeletarUsuario_veiculoById = async function (id) {
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
             } else {
+                return message.ERROR_NOT_FOUND
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
 
+const setDeletarUsuario_veiculoById_usuario = async function (id) {
+    let jsonDeleteUsuario_veiculo = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarUsuario_veiculoById(id)
+
+            if (validaId) {
+                const id = validaId.usuario_veiculo[0].id
+
+                const apagarUsuario_veiculo = await usuario_veiculosDao.deleteUsuario_veiculoId_usuario(id)
+
+                if (apagarUsuario_veiculo) {
+                    jsonDeleteUsuario_veiculo.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeleteUsuario_veiculo.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeleteUsuario_veiculo.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeleteUsuario_veiculo.id = validaId.usuario_veiculo[0].id
+
+                    return jsonDeleteUsuario_veiculo
+                } else {
+                    console.log(dadosUsuario_veiculo);
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+                return message.ERROR_NOT_FOUND
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
+const setDeletarUsuario_veiculoById_veiculo = async function (id) {
+    let jsonDeleteUsuario_veiculo = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarUsuario_veiculoById(id)
+
+            if (validaId) {
+                const id = validaId.usuario_veiculo[0].id
+
+                const apagarUsuario_veiculo = await usuario_veiculosDao.deleteUsuario_veiculoId_veiculo(id)
+
+                if (apagarUsuario_veiculo) {
+                    jsonDeleteUsuario_veiculo.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeleteUsuario_veiculo.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeleteUsuario_veiculo.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeleteUsuario_veiculo.id = validaId.usuario_veiculo[0].id
+
+                    return jsonDeleteUsuario_veiculo
+                } else {
+                    console.log(dadosUsuario_veiculo);
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+                return message.ERROR_NOT_FOUND
             }
         }
     } catch (error) {
@@ -266,5 +336,7 @@ module.exports = {
     getBuscarUltimoUsuario_veiculoInserido,
     setInserirUsuario_veiculos,
     setAtualizarUsuario_veiculo,
-    setDeletarUsuario_veiculoById
+    setDeletarUsuario_veiculoById,
+    setDeletarUsuario_veiculoById_usuario,
+    setDeletarUsuario_veiculoById_veiculo
 }

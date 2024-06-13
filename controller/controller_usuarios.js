@@ -9,6 +9,10 @@
  * Versão: 1.0 
  ********************************************************/
 
+
+const controllerPagamento_Reserva = require('./controller_pagamento_reservas.js')
+const controllerUsuario_veiculos = require('./controller_usuario_veiculos.js')
+const controllerReserva_vagas_usuario = require('./controller_reserva_vagas_usuario.js')
 const usuariosDao = require('../model/DAO/usuarios.js')
 const message = require('../modulo/config.js')
 
@@ -285,21 +289,41 @@ const setDeletarUsuarioById = async function (id) {
             if (validaId) {
                 const id = validaId.usuario[0].id
 
-                const apagarUsuario = await usuariosDao.deleteUsuario(id)
+                const apagarReservaUsuario = await controllerReserva_vagas_usuario.setDeletarReserva_vagas_usuarioById_usuario(id)
 
-                if (apagarUsuario) {
-                    jsonDeleteUsuario.status = message.SUCCES_DELETED_ITEM.status
-                    jsonDeleteUsuario.status_code = message.SUCCES_DELETED_ITEM.status_code
-                    jsonDeleteUsuario.message = message.SUCCES_DELETED_ITEM.message
-                    jsonDeleteUsuario.id = validaId.usuario[0].id
+                if (apagarReservaUsuario) {
+                    const apagarVeiculoUsuario = await controllerUsuario_veiculos.setDeletarUsuario_veiculoById_usuario(id)
 
-                    return jsonDeleteUsuario
+                    if (apagarVeiculoUsuario) {
+                        const apagarPagamentoUsuario = await controllerPagamento_Reserva.setDeletarPagamento_reservaById_usuario(id)
+
+                        if (apagarPagamentoUsuario) {
+                            const apagarUsuario = await usuariosDao.deleteUsuario(id)
+
+                            if (apagarUsuario) {
+                                jsonDeleteUsuario.status = message.SUCCES_DELETED_ITEM.status
+                                jsonDeleteUsuario.status_code = message.SUCCES_DELETED_ITEM.status_code
+                                jsonDeleteUsuario.message = message.SUCCES_DELETED_ITEM.message
+                                jsonDeleteUsuario.id = validaId.usuario[0].id
+
+                                return jsonDeleteUsuario
+                            } else {
+                                console.log(dadosUsuario);
+                                return message.ERROR_INTERNAL_SERVER_DB
+                            }
+                        } else {
+                            return message.ERROR_INTERNAL_SERVER
+                        }
+                    } else {
+                        return message.ERROR_INTERNAL_SERVER
+                    }
                 } else {
-                    console.log(dadosUsuario);
-                    return message.ERROR_INTERNAL_SERVER_DB
+                    return message.ERROR_INTERNAL_SERVER
                 }
-            } else {
 
+
+            } else {
+                return message.ERROR_NOT_FOUND
             }
         }
     } catch (error) {

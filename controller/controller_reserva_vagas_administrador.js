@@ -298,11 +298,151 @@ const setDeletarReserva_vagas_AdministradorById = async function (id) {
     }
 }
 
+const setDeletarReserva_vagas_AdministradorById_veiculo = async function (id) {
+    let jsonDeleteReserva_vagas_Administrador = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarReserva_vagas_AdministradorById(id)
+
+            if (validaId) {
+                const id = validaId.reserva_vagas_Administrador[0].id
+
+                const apagarReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.deleteReserva_vaga_administradorId_veiculo(id)
+
+                if (apagarReserva_vagas_Administrador) {
+                    jsonDeleteReserva_vagas_Administrador.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeleteReserva_vagas_Administrador.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeleteReserva_vagas_Administrador.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeleteReserva_vagas_Administrador.id = validaId.reserva_vagas_Administrador[0].id
+
+                    return jsonDeleteReserva_vagas_Administrador
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
+const setDeletarReserva_vagas_AdministradorById_vaga = async function (id) {
+    let jsonDeleteReserva_vagas_Administrador = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarReserva_vagas_AdministradorById(id)
+
+            if (validaId) {
+                const id = validaId.reserva_vagas_Administrador[0].id
+
+                const apagarReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.deleteReserva_vaga_administradorId_vaga(id)
+
+                if (apagarReserva_vagas_Administrador) {
+                    jsonDeleteReserva_vagas_Administrador.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeleteReserva_vagas_Administrador.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeleteReserva_vagas_Administrador.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeleteReserva_vagas_Administrador.id = validaId.reserva_vagas_Administrador[0].id
+
+                    return jsonDeleteReserva_vagas_Administrador
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
+const setDeletarReserva_vagas_AdministradorById_reserva = async function (id) {
+    let jsonDeleteReserva_vagas_Administrador = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarReserva_vagas_AdministradorById(id)
+
+            if (validaId) {
+                const id = validaId.reserva_vagas_Administrador[0].id
+
+                const apagarReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.deleteReserva_vaga_administradorId_reserva(id)
+
+                if (apagarReserva_vagas_Administrador) {
+                    jsonDeleteReserva_vagas_Administrador.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeleteReserva_vagas_Administrador.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeleteReserva_vagas_Administrador.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeleteReserva_vagas_Administrador.id = validaId.reserva_vagas_Administrador[0].id
+
+                    return jsonDeleteReserva_vagas_Administrador
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
+const setDeletarReserva_vagas_AdministradorById_Administrador = async function (id) {
+    let jsonDeleteReserva_vagas_Administrador = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarReserva_vagas_AdministradorById(id)
+
+            if (validaId) {
+                const id = validaId.reserva_vagas_Administrador[0].id
+
+                const apagarReserva_vagas_Administrador = await reserva_vagas_AdministradoresDao.deleteReserva_vaga_administrador_By_Id_Administrador(id)
+
+                if (apagarReserva_vagas_Administrador) {
+                    jsonDeleteReserva_vagas_Administrador.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeleteReserva_vagas_Administrador.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeleteReserva_vagas_Administrador.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeleteReserva_vagas_Administrador.id = validaId.reserva_vagas_Administrador[0].id
+
+                    return jsonDeleteReserva_vagas_Administrador
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
 module.exports = {
     getListarReserva_vagas_Administrador,
     getBuscarReserva_vagas_AdministradorById,
     getBuscarUltimoReserva_vagas_AdministradorInserido,
     setInserirReserva_vagas_Administradors,
     setAtualizarReserva_vagas_Administrador,
-    setDeletarReserva_vagas_AdministradorById
+    setDeletarReserva_vagas_AdministradorById,
+    setDeletarReserva_vagas_AdministradorById_Administrador,
+    setDeletarReserva_vagas_AdministradorById_reserva,
+    setDeletarReserva_vagas_AdministradorById_vaga,
+    setDeletarReserva_vagas_AdministradorById_veiculo
 }

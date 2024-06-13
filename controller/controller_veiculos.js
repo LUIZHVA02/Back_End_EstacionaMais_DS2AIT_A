@@ -9,6 +9,8 @@
  * Versão: 1.0 
  ********************************************************/
 
+const controllerUsuario_veiculos = require('./controller_usuario_veiculos.js')
+const controllerReserva_vagas_usuario = require('./controller_reserva_vagas_usuario.js')
 const veiculosDao = require('../model/DAO/veiculos.js')
 const message = require('../modulo/config.js')
 
@@ -245,7 +247,7 @@ const setAtualizarVeiculo = async function (id, dadosVeiculoUpdate, content) {
                     informacao == null
                 ) { }
 
-                console.log(dadosVeiculoUpdate,updateVeiculoJson);
+                console.log(dadosVeiculoUpdate, updateVeiculoJson);
                 const veiculoAtualizado = await veiculosDao.updateVeiculo(id, updateVeiculoJson)
 
                 if (veiculoAtualizado) {
@@ -285,18 +287,30 @@ const setDeletarVeiculoById = async function (id) {
             if (validaId) {
                 const id = validaId.veiculo[0].id
 
-                const apagarVeiculo = await veiculosDao.deleteVeiculo(id)
+                const apagarVeiculoUsuario = await controllerUsuario_veiculos.setDeletarUsuario_veiculoById_veiculo(id)
 
-                if (apagarVeiculo) {
-                    jsonDeleteVeiculo.status = message.SUCCES_DELETED_ITEM.status
-                    jsonDeleteVeiculo.status_code = message.SUCCES_DELETED_ITEM.status_code
-                    jsonDeleteVeiculo.message = message.SUCCES_DELETED_ITEM.message
-                    jsonDeleteVeiculo.id = validaId.veiculo[0].id
+                if (apagarVeiculoUsuario) {
+                    const apagarReservaVeiculoUsuario = await controllerReserva_vagas_usuario.setDeletarReserva_vagas_usuarioById_veiculo(id)
 
-                    return jsonDeleteVeiculo
+                    if (apagarReservaVeiculoUsuario) {
+                        const apagarVeiculo = await veiculosDao.deleteVeiculo(id)
+
+                        if (apagarVeiculo) {
+                            jsonDeleteVeiculo.status = message.SUCCES_DELETED_ITEM.status
+                            jsonDeleteVeiculo.status_code = message.SUCCES_DELETED_ITEM.status_code
+                            jsonDeleteVeiculo.message = message.SUCCES_DELETED_ITEM.message
+                            jsonDeleteVeiculo.id = validaId.veiculo[0].id
+
+                            return jsonDeleteVeiculo
+                        } else {
+                            console.log(validaId, apagarVeiculo);
+                            return message.ERROR_INTERNAL_SERVER_DB
+                        }
+                    } else {
+                        return message.ERROR_INTERNAL_SERVER
+                    }
                 } else {
-                    console.log(validaId,apagarVeiculo);
-                    return message.ERROR_INTERNAL_SERVER_DB
+                    return message.ERROR_INTERNAL_SERVER
                 }
             } else {
                 return message.ERROR_NOT_FOUND

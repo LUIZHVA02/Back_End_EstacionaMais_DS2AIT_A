@@ -9,6 +9,9 @@
  * Versão: 1.0 
  ********************************************************/
 
+
+const controllerReserva_vagas_administrador = require('./controller_reserva_vagas_administrador.js')
+const controllerReserva_vagas_usuario = require('./controller_reserva_vagas_usuario.js')
 const vagasDao = require('../model/DAO/vagas.js')
 const message = require('../modulo/config.js')
 
@@ -235,21 +238,33 @@ const setDeletarVagaById = async function (id) {
             if (validaId) {
                 const id = validaId.vaga[0].id
 
-                const apagarVaga = await vagasDao.deleteVaga(id)
+                const apagarReservaVagaAdministrador = await controllerReserva_vagas_administrador.setDeletarReserva_vagas_AdministradorById_vaga(id)
 
-                if (apagarVaga) {
-                    jsonDeleteVaga.status = message.SUCCES_DELETED_ITEM.status
-                    jsonDeleteVaga.status_code = message.SUCCES_DELETED_ITEM.status_code
-                    jsonDeleteVaga.message = message.SUCCES_DELETED_ITEM.message
-                    jsonDeleteVaga.id = validaId.vaga[0].id
+                if (apagarReservaVagaAdministrador) {
+                    const apagarReservaVagaUsuario = await controllerReserva_vagas_usuario.setDeletarReserva_vagas_usuarioById_usuario(id)
 
-                    return jsonDeleteVaga
+                    if (apagarReservaVagaUsuario) {
+                        const apagarVaga = await vagasDao.deleteVaga(id)
+
+                        if (apagarVaga) {
+                            jsonDeleteVaga.status = message.SUCCES_DELETED_ITEM.status
+                            jsonDeleteVaga.status_code = message.SUCCES_DELETED_ITEM.status_code
+                            jsonDeleteVaga.message = message.SUCCES_DELETED_ITEM.message
+                            jsonDeleteVaga.id = validaId.vaga[0].id
+
+                            return jsonDeleteVaga
+                        } else {
+                            console.log(dadosVaga);
+                            return message.ERROR_INTERNAL_SERVER_DB
+                        }
+                    } else {
+                        return message.ERROR_INTERNAL_SERVER
+                    }
                 } else {
-                    console.log(dadosVaga);
-                    return message.ERROR_INTERNAL_SERVER_DB
+                    return message.ERROR_INTERNAL_SERVER
                 }
             } else {
-
+                return message.ERROR_INTERNAL_SERVER
             }
         }
     } catch (error) {

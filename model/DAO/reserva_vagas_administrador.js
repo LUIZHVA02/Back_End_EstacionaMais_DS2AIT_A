@@ -120,11 +120,67 @@ const deleteReserva_vaga_administrador = async function (id) {
     }
 }
 
+const deleteReserva_vaga_administradorId_vaga = async function (id) {
+    try {
+        let sql = `delete from tbl_reserva_vagas_administrador where id_vaga = ${id}`
+
+        const rsReserva_vaga_administrador = await prisma.$executeRawUnsafe(sql)
+
+        return rsReserva_vaga_administrador
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
+const deleteReserva_vaga_administradorId_veiculo = async function (id) {
+    try {
+        let sql = `delete from tbl_reserva_vagas_administrador where id_veiculo = ${id}`
+
+        const rsReserva_vaga_administrador = await prisma.$executeRawUnsafe(sql)
+
+        return rsReserva_vaga_administrador
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
+const deleteReserva_vaga_administradorId_reserva = async function (id) {
+    try {
+        let sql = `delete from tbl_reserva_vagas_administrador where id_reserva = ${id}`
+
+        const rsReserva_vaga_administrador = await prisma.$executeRawUnsafe(sql)
+
+        return rsReserva_vaga_administrador
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
+const deleteReserva_vaga_administrador_By_Id_Administrador = async function (id) {
+    try {
+        let sql = `delete from tbl_reserva_vagas_administrador where id_administrador = ${id}`
+
+        const rsReserva_vaga_administrador = await prisma.$executeRawUnsafe(sql)
+
+        return rsReserva_vaga_administrador
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
 module.exports = {
     selectAllReserva_vaga_administrador,
     selectByIdReserva_vaga_administrador,
     selectLastIdReserva_vaga_administrador,
     updateReserva_vaga_administrador,
     insertReserva_vaga_administrador,
-    deleteReserva_vaga_administrador
+    deleteReserva_vaga_administrador,
+    deleteReserva_vaga_administrador_By_Id_Administrador,
+    deleteReserva_vaga_administradorId_reserva,
+    deleteReserva_vaga_administradorId_vaga,
+    deleteReserva_vaga_administradorId_veiculo
 }

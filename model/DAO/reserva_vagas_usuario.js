@@ -120,11 +120,67 @@ const deleteReserva_vaga_usuario = async function (id) {
     }
 }
 
+const deleteReserva_vaga_usuarioId_reserva = async function (id) {
+    try {
+        let sql = `delete from tbl_reserva_vagas_usuario where id_reserva = ${id}`
+
+        const rsReserva_vaga_usuario = await prisma.$executeRawUnsafe(sql)
+
+        return rsReserva_vaga_usuario
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
+const deleteReserva_vaga_usuarioId_vaga = async function (id) {
+    try {
+        let sql = `delete from tbl_reserva_vagas_usuario where id_vaga = ${id}`
+
+        const rsReserva_vaga_usuario = await prisma.$executeRawUnsafe(sql)
+
+        return rsReserva_vaga_usuario
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
+const deleteReserva_vaga_usuarioId_veiculo = async function (id) {
+    try {
+        let sql = `delete from tbl_reserva_vagas_usuario where id_veiculo = ${id}`
+
+        const rsReserva_vaga_usuario = await prisma.$executeRawUnsafe(sql)
+
+        return rsReserva_vaga_usuario
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
+const deleteReserva_vaga_usuarioId_usuario = async function (id) {
+    try {
+        let sql = `delete from tbl_reserva_vagas_usuario where id_usuario = ${id}`
+
+        const rsReserva_vaga_usuario = await prisma.$executeRawUnsafe(sql)
+
+        return rsReserva_vaga_usuario
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
 module.exports = {
     selectAllReserva_vaga_usuario,
     selectByIdReserva_vaga_usuario,
     selectLastIdReserva_vaga_usuario,
     updateReserva_vaga_usuario,
     insertReserva_vaga_usuario,
-    deleteReserva_vaga_usuario
+    deleteReserva_vaga_usuario,
+    deleteReserva_vaga_usuarioId_vaga,
+    deleteReserva_vaga_usuarioId_reserva,
+    deleteReserva_vaga_usuarioId_usuario,
+    deleteReserva_vaga_usuarioId_veiculo
 }

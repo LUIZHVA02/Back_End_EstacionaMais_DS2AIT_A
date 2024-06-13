@@ -9,6 +9,7 @@
  * Versão: 1.0 
  ********************************************************/
 
+const controller_reserva_vagas_administrador = require('./controller_reserva_vagas_administrador')
 const administradoresDao = require('../model/DAO/administradores.js')
 const message = require('../modulo/config.js')
 
@@ -284,21 +285,27 @@ const setDeletarAdministradorById = async function (id) {
             if (validaId) {
                 const id = validaId.administrador[0].id
 
-                const apagarAdministrador = await administradoresDao.deleteAdministrador(id)
+                const apagarReservaAdministrador = await controller_reserva_vagas_administrador.setDeletarReserva_vagas_AdministradorById_Administrador(id)
 
-                if (apagarAdministrador) {
-                    jsonDeleteAdministrador.status = message.SUCCES_DELETED_ITEM.status
-                    jsonDeleteAdministrador.status_code = message.SUCCES_DELETED_ITEM.status_code
-                    jsonDeleteAdministrador.message = message.SUCCES_DELETED_ITEM.message
-                    jsonDeleteAdministrador.id = validaId.administrador[0].id
+                if (apagarReservaAdministrador) {
+                    const apagarAdministrador = await administradoresDao.deleteAdministrador(id)
 
-                    return jsonDeleteAdministrador
+                    if (apagarAdministrador) {
+                        jsonDeleteAdministrador.status = message.SUCCES_DELETED_ITEM.status
+                        jsonDeleteAdministrador.status_code = message.SUCCES_DELETED_ITEM.status_code
+                        jsonDeleteAdministrador.message = message.SUCCES_DELETED_ITEM.message
+                        jsonDeleteAdministrador.id = validaId.administrador[0].id
+
+                        return jsonDeleteAdministrador
+                    } else {
+                        console.log(dadosAdministrador);
+                        return message.ERROR_INTERNAL_SERVER_DB
+                    }
                 } else {
-                    console.log(dadosAdministrador);
-                    return message.ERROR_INTERNAL_SERVER_DB
+                    return message.ERROR_INTERNAL_SERVER
                 }
             } else {
-
+                return message.ERROR_NOT_FOUND
             }
         }
     } catch (error) {

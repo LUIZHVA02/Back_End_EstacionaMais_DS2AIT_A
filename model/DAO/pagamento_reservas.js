@@ -111,11 +111,53 @@ const deletePagamento_reserva = async function (id) {
     }
 }
 
+const deletePagamento_reservaId_pagamento = async function (id) {
+    try {
+
+        let sql = `delete from tbl_pagamento_reserva where id_pagamento = ${id}`
+
+        const rsPagamento_reserva = await prisma.$executeRawUnsafe(sql)
+        return rsPagamento_reserva
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
+const deletePagamento_reservaId_reserva = async function (id) {
+    try {
+
+        let sql = `delete from tbl_pagamento_reserva where id_reserva = ${id}`
+
+        const rsPagamento_reserva = await prisma.$executeRawUnsafe(sql)
+        return rsPagamento_reserva
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
+const deletePagamento_reservaId_usuario = async function (id) {
+    try {
+
+        let sql = `delete from tbl_pagamento_reserva where id_usuario = ${id}`
+
+        const rsPagamento_reserva = await prisma.$executeRawUnsafe(sql)
+        return rsPagamento_reserva
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
+
 module.exports = {
     selectAllPagamento_reservas,
     selectByIdPagamento_reserva,
     selectLastIdPagamento_reserva,
     updatePagamento_reserva,
     insertPagamento_reserva,
-    deletePagamento_reserva
+    deletePagamento_reserva,
+    deletePagamento_reservaId_pagamento,
+    deletePagamento_reservaId_reserva,
+    deletePagamento_reservaId_usuario
 }

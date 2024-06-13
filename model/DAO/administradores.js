@@ -17,7 +17,7 @@ const prisma = new PrismaClient()
 
 const selectAllAdministradores = async function () {
     try {
-        let sql = `select * from tbl_administradores`
+        let sql = `select id, nome, email, telefone, endereco from tbl_administradores`
 
         const rsAdministradores = await prisma.$queryRawUnsafe(sql)
 
@@ -29,7 +29,7 @@ const selectAllAdministradores = async function () {
 
 const selectByIdAdministrador = async function (id) {
     try {
-        let sql = `select * from tbl_administradores where id = ${id}`
+        let sql = `select id, nome, email, telefone, endereco from tbl_administradores where id = ${id}`
 
         const rsAdministradores = await prisma.$queryRawUnsafe(sql)
 

@@ -11,6 +11,9 @@
 
 const tratamentoRepo = require('./tratamentos.js')
 
+const controllerPagamento_Reserva = require('./controller_pagamento_reservas.js')
+const controllerReserva_vagas_administrador = require('./controller_reserva_vagas_administrador.js')
+const controllerReserva_vagas_usuario = require('./controller_reserva_vagas_usuario.js')
 const reservasDao = require('../model/DAO/reservas.js')
 const message = require('../modulo/config.js')
 
@@ -279,21 +282,40 @@ const setDeletarReservasById = async function (id) {
             if (validaId) {
                 const id = validaId.reservas.id
 
-                const apagarReservas = await reservasDao.deleteReservas(id)
+                const apagarPagamentoReservas = await controllerPagamento_Reserva.setDeletarPagamento_reservaById_reserva(id)
 
-                if (apagarReservas) {
-                    jsonDeleteReservas.status = message.SUCCES_DELETED_ITEM.status
-                    jsonDeleteReservas.status_code = message.SUCCES_DELETED_ITEM.status_code
-                    jsonDeleteReservas.message = message.SUCCES_DELETED_ITEM.message
-                    jsonDeleteReservas.id = id
+                if (apagarPagamentoReservas) {
+                    const apagarReservasUsuario = await controllerReserva_vagas_usuario.setDeletarReserva_vagas_usuarioById_reserva(id)
 
-                    return jsonDeleteReservas
+                    if (apagarReservasUsuario) {
+                        const apagarReservasAdministrador = await controllerReserva_vagas_administrador.setDeletarReserva_vagas_AdministradorById_reserva(id)
+
+                        if (apagarReservasAdministrador) {
+                            const apagarReservas = await reservasDao.deleteReservas(id)
+
+                            if (apagarReservas) {
+                                jsonDeleteReservas.status = message.SUCCES_DELETED_ITEM.status
+                                jsonDeleteReservas.status_code = message.SUCCES_DELETED_ITEM.status_code
+                                jsonDeleteReservas.message = message.SUCCES_DELETED_ITEM.message
+                                jsonDeleteReservas.id = id
+
+                                return jsonDeleteReservas
+                            } else {
+                                console.log(dadosReservas);
+                                return message.ERROR_INTERNAL_SERVER_DB
+                            }
+                        } else {
+                            return message.ERROR_INTERNAL_SERVER
+                        }
+                    } else {
+                        return message.ERROR_INTERNAL_SERVER
+                    }
                 } else {
-                    console.log(dadosReservas);
-                    return message.ERROR_INTERNAL_SERVER_DB
+                    return message.ERROR_INTERNAL_SERVER
                 }
-            } else {
 
+            } else {
+                return message.ERROR_NOT_FOUND
             }
         }
     } catch (error) {

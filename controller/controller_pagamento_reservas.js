@@ -275,11 +275,121 @@ const setDeletarPagamento_reservaById = async function (id) {
     }
 }
 
+const setDeletarPagamento_reservaById_reserva = async function (id) {
+    let jsonDeletePagamento_reserva = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarPagamento_reservaById(id)
+
+            if (validaId) {
+                const id = validaId.pagamento_reserva[0].id
+
+                const apagarPagamento_reserva = await pagamento_reservasDao.deletePagamento_reservaId_reserva(id)
+
+                if (apagarPagamento_reserva) {
+                    jsonDeletePagamento_reserva.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeletePagamento_reserva.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeletePagamento_reserva.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeletePagamento_reserva.id = validaId.pagamento_reserva[0].id
+
+                    return jsonDeletePagamento_reserva
+                } else {
+                    console.log(dadosPagamento_reserva);
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
+const setDeletarPagamento_reservaById_usuario = async function (id) {
+    let jsonDeletePagamento_reserva = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarPagamento_reservaById(id)
+
+            if (validaId) {
+                const id = validaId.pagamento_reserva[0].id
+
+                const apagarPagamento_reserva = await pagamento_reservasDao.deletePagamento_reservaId_usuario(id)
+
+                if (apagarPagamento_reserva) {
+                    jsonDeletePagamento_reserva.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeletePagamento_reserva.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeletePagamento_reserva.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeletePagamento_reserva.id = validaId.pagamento_reserva[0].id
+
+                    return jsonDeletePagamento_reserva
+                } else {
+                    console.log(dadosPagamento_reserva);
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
+const setDeletarPagamento_reservaById_pagamento = async function (id) {
+    let jsonDeletePagamento_reserva = {}
+
+    try {
+        if (id == "" || id == undefined || isNaN(id)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            const validaId = await getBuscarPagamento_reservaById(id)
+
+            if (validaId) {
+                const id = validaId.pagamento_reserva[0].id
+
+                const apagarPagamento_reserva = await pagamento_reservasDao.deletePagamento_reservaId_pagamento(id)
+
+                if (apagarPagamento_reserva) {
+                    jsonDeletePagamento_reserva.status = message.SUCCES_DELETED_ITEM.status
+                    jsonDeletePagamento_reserva.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    jsonDeletePagamento_reserva.message = message.SUCCES_DELETED_ITEM.message
+                    jsonDeletePagamento_reserva.id = validaId.pagamento_reserva[0].id
+
+                    return jsonDeletePagamento_reserva
+                } else {
+                    console.log(dadosPagamento_reserva);
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
+
+
 module.exports = {
     getListarPagamento_reservas,
     getBuscarPagamento_reservaById,
     getBuscarUltimoPagamento_reservaInserido,
     setInserirPagamento_reservas,
     setAtualizarPagamento_reserva,
-    setDeletarPagamento_reservaById
+    setDeletarPagamento_reservaById,
+    setDeletarPagamento_reservaById_pagamento,
+    setDeletarPagamento_reservaById_reserva,
+    setDeletarPagamento_reservaById_usuario
 }

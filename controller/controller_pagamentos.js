@@ -9,7 +9,8 @@
  * Versão: 1.0 
  ********************************************************/
 
-const pagamentosDao = require('../model/DAO/Pagamentos.js')
+const controller_pagamento_reservas = require('./controller_pagamento_reservas.js')
+const pagamentosDao = require('../model/DAO/pagamentos.js')
 const message = require('../modulo/config.js')
 
 
@@ -203,21 +204,28 @@ const setDeletarPagamentoById = async function (id) {
             if (validaId) {
                 const id = validaId.pagamento[0].id
 
-                const apagarPagamento = await pagamentosDao.deletePagamento(id)
+                const apagarPagamentoReserva = await controller_pagamento_reservas.setDeletarPagamento_reservaById_pagamento(id)
 
-                if (apagarPagamento) {
-                    jsonDeletePagamento.status = message.SUCCES_DELETED_ITEM.status
-                    jsonDeletePagamento.status_code = message.SUCCES_DELETED_ITEM.status_code
-                    jsonDeletePagamento.message = message.SUCCES_DELETED_ITEM.message
-                    jsonDeletePagamento.id = validaId.pagamento[0].id
+                if (apagarPagamentoReserva) {
+                    const apagarPagamento = await pagamentosDao.deletePagamento(id)
 
-                    return jsonDeletePagamento
+                    if (apagarPagamento) {
+                        jsonDeletePagamento.status = message.SUCCES_DELETED_ITEM.status
+                        jsonDeletePagamento.status_code = message.SUCCES_DELETED_ITEM.status_code
+                        jsonDeletePagamento.message = message.SUCCES_DELETED_ITEM.message
+                        jsonDeletePagamento.id = validaId.pagamento[0].id
+
+                        return jsonDeletePagamento
+                    } else {
+                        console.log(dadosPagamento);
+                        return message.ERROR_INTERNAL_SERVER_DB
+                    }
                 } else {
-                    console.log(dadosPagamento);
-                    return message.ERROR_INTERNAL_SERVER_DB
+                    return message.ERROR_INTERNAL_SERVER
                 }
-            } else {
 
+            } else {
+                return message.ERROR_NOT_FOUND
             }
         }
     } catch (error) {
